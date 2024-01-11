@@ -7,6 +7,7 @@ public class MemoryRepository {
     private List<Student> studentList;
     private List<Score> scoreList;
     private List<Subject> subjectList;
+    private int memberidx = 0;
 
     private static final MemoryRepository instance = new MemoryRepository();
 
@@ -37,6 +38,6 @@ public class MemoryRepository {
     public void addMember(String name, List<Subject> subjectList) {
         memberidx++;
         Student student = new Student(memberidx, name, subjectList);
-        studentList.add(student) ;
+        studentList.add(student);
     }
 }
