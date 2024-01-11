@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MemoryRepository {
@@ -25,20 +26,8 @@ public class MemoryRepository {
     private MemoryRepository() {
     }
 
-    // 전체 수강생 목록 확인
-    public void findAllStudent() {
-        if (studentList.isEmpty()) {
-            System.out.println("등록된 수강생이 없습니다.");
-        } else
-            for (Student student : studentList) {
-                System.out.printf("학생코드 : %d, 이름 : %s", student.getStudentId(), student.getMemberName());
-                List<Subject> subjects = student.getSubjectList();
-                if (!subjects.isEmpty()) {
-                    for (Subject subject : subjects) {
-                        System.out.printf(", 과목코드 : %s, 과목이름 : %s, 과목타입 : %s", subject.getSubjectId(), subject.getSubjectName(), subject.getType());
-                    }
-                }
-                System.out.println();
-            }
+    //전체 수강생 목록 조회
+    public List<Student> findAllStudent() {
+        return studentList;
     }
 }
