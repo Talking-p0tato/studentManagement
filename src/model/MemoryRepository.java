@@ -1,6 +1,7 @@
 package model;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -9,12 +10,21 @@ import java.util.stream.Collectors;
 public class MemoryRepository {
 
     private List<Student> studentList;
-    private List<Score> scores;
+    private List<Score> scoreList;
     private List<Subject> subjectList;
+    private int memberidx = 0;
 
     private static final MemoryRepository instance = new MemoryRepository();
 
-    public MemoryRepository getInstance() {
+    public List<Student> getStudentList() {
+        return studentList;
+    }
+
+    public List<Subject> getSubjectList() {
+        return subjectList;
+    }
+
+    public static MemoryRepository getInstance() {
         return instance;
     }
 
@@ -35,7 +45,7 @@ public class MemoryRepository {
         Map<String, List<Score>> scoresBySubject = new HashMap<>();
         Student student = studentOpt.get();
         for (Subject subject : student.getSubjectList()) {
-            List<Score> scoresForSubject = scores.stream()
+            List<Score> scoresForSubject = scoreList.stream()
                     .filter(score -> score.getStudent().equals(student) && score.getSubject().equals(subject))
                     .collect(Collectors.toList());
             scoresBySubject.put(subject.getSubjectName(), scoresForSubject);
@@ -70,7 +80,7 @@ public class MemoryRepository {
         }
 
         // 과목의 해당 회차 점수가 이미 있는지 확인
-        Optional<Score> existingScore = scores.stream()
+        Optional<Score> existingScore = scoreList.stream()
                 .filter(scoreObj -> scoreObj.getStudent().getStudentId() == studentId
                         && scoreObj.getSubject().getSubjectName().equals(subjectName)
                         && scoreObj.getRound() == round)
@@ -86,7 +96,7 @@ public class MemoryRepository {
             Score newScore = new Score(studentOpt.get(), subjectOpt.get(), round, score);
             // 등급 계산 및 설정
             newScore.setGrade(calculateGrade(score, subjectOpt.get().getType()));
-            scores.add(newScore);
+            scoreList.add(newScore);
         }
     }
 
@@ -123,4 +133,29 @@ public class MemoryRepository {
         }
     }
 
+
+
+    //전체 수강생 목록 조회
+    public List<Student> findAllStudent() {
+        return studentList;
+    }
+
+    // 학생 등급 조회
+    public List<Score> findGradebyIdAndName(int studentId, String subjectName) {
+        List<Score> gradeList = this.scoreList;
+        for (Score score : scoreList) {
+            if (score.getStudent().getStudentId() == studentId && score.getSubject().getSubjectName().equals(subjectName)) {
+                gradeList.add(score);
+            }
+        }
+        return gradeList;
+    }
+
+    //학생 등록
+    public void addMember(String name, List<Subject> subjectList) {
+        memberidx++;
+        Student student = new Student(memberidx, name, subjectList);
+        studentList.add(student) ;
+    }
 }
+
