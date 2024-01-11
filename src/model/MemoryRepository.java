@@ -110,11 +110,5 @@ public class MemoryRepository {
         return gradeList;
     }
 
-    //학생 등록
-    public void addMember(String name, List<Subject> subjectList) {
-        memberidx++;
-        Student student = new Student(memberidx, name, subjectList);
-        studentList.add(student) ;
-    }
 }
 
