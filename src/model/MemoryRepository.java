@@ -16,6 +16,17 @@ public class MemoryRepository {
     }
 
     private MemoryRepository() {
+        //필수
+        subjectList.add(new Subject(1,"java","필수"));
+        subjectList.add(new Subject(2,"객체지향","필수"));
+        subjectList.add(new Subject(3,"spring","필수"));
+        subjectList.add(new Subject(4,"jpa","필수"));
+        subjectList.add(new Subject(5,"mysql","필수"));
+        //선택
+        subjectList.add(new Subject(5,"디자인패턴","선택"));
+        subjectList.add(new Subject(5,"spring security","선택"));
+        subjectList.add(new Subject(5,"redis","선택"));
+        subjectList.add(new Subject(5,"mongodb","선택"));
     }
 
     public void addTestScore(Student student, Subject subject, int round, int score) {
