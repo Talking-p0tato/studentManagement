@@ -8,17 +8,9 @@ public class MemoryRepository {
     private List<Student> studentList;
     private List<Score> scoreList;
     private List<Subject> subjectList;
-    private int memberidx = 0;
+    private int memberIdx = 0;
 
     private static final MemoryRepository instance = new MemoryRepository();
-
-    public List<Student> getStudentList() {
-        return studentList;
-    }
-
-    public List<Subject> getSubjectList() {
-        return subjectList;
-    }
 
     public static MemoryRepository getInstance() {
         return instance;
@@ -28,14 +20,8 @@ public class MemoryRepository {
     }
 
 
-
-    //전체 수강생 목록 조회
-    public List<Student> findAllStudent() {
-        return studentList;
-    }
-
     // 학생 등급 조회
-    public List<Score> findGradebyIdAndName(int studentId, String subjectName) {
+    public List<Score> findGradeByIdAndName(int studentId, String subjectName) {
         List<Score> gradeList = this.scoreList;
         for (Score score : scoreList) {
             if (score.getStudent().getStudentId() == studentId && score.getSubject().getSubjectName().equals(subjectName)) {
@@ -49,13 +35,13 @@ public class MemoryRepository {
     public List<Student> findAllStudent() {
         return studentList;
     }
-}
+
 
 
     //학생 등록
     public void addMember(String name, List<Subject> subjectList) {
-        memberidx++;
-        Student student = new Student(memberidx, name, subjectList);
+        memberIdx++;
+        Student student = new Student(memberIdx, name, subjectList);
         studentList.add(student) ;
     }
 }
