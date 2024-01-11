@@ -23,28 +23,28 @@ public class MemoryRepository {
         return subjectList;
     }
 
-    public MemoryRepository getInstance() {
+    public static MemoryRepository getInstance() {
         return instance;
     }
 
     private MemoryRepository() {
         //필수
-        subjectList.add(new Subject(1,"java","필수"));
-        subjectList.add(new Subject(2,"객체지향","필수"));
-        subjectList.add(new Subject(3,"spring","필수"));
-        subjectList.add(new Subject(4,"jpa","필수"));
-        subjectList.add(new Subject(5,"mysql","필수"));
+        subjectList.add(new Subject(1, "java", "필수"));
+        subjectList.add(new Subject(2, "객체지향", "필수"));
+        subjectList.add(new Subject(3, "spring", "필수"));
+        subjectList.add(new Subject(4, "jpa", "필수"));
+        subjectList.add(new Subject(5, "mysql", "필수"));
         //선택
-        subjectList.add(new Subject(5,"디자인패턴","선택"));
-        subjectList.add(new Subject(5,"spring security","선택"));
-        subjectList.add(new Subject(5,"redis","선택"));
-        subjectList.add(new Subject(5,"mongodb","선택"));
+        subjectList.add(new Subject(5, "디자인패턴", "선택"));
+        subjectList.add(new Subject(5, "spring security", "선택"));
+        subjectList.add(new Subject(5, "redis", "선택"));
+        subjectList.add(new Subject(5, "mongodb", "선택"));
     }
 
     //학생 등록
     public void addMember(String name, List<Subject> subjectList) {
         Student student = new Student(memberIdx++, name, subjectList);
-        studentList.add(student) ;
+        studentList.add(student);
     }
 
     public void addTestScore(Student student, Subject subject, int round, int score) {
@@ -75,7 +75,7 @@ public class MemoryRepository {
     //true : 해당 과목에 차수에 대한 점수 존재, false : 해당 과목 차수에 대한 점수 없음
 
     public boolean isScoreRecordExist(int studentId, String subjectName, int round) {
-        if(findScoreRecord(studentId, subjectName, round) != null) {
+        if (findScoreRecord(studentId, subjectName, round) != null) {
             return true;
         } else {
             return false;
