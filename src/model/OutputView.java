@@ -21,28 +21,49 @@ public class OutputView {
             if (number == 1) {
                 //MemoryRepository의 전체수강생목록조회(findAllStudent())메서드사용
                 List<Student> student = repository.findAllStudent();
-                System.out.println("등록된 수강생은 " + student.size() + "명 입니다.");
-                for (Student value : student) {
-                    System.out.println(" 수강생ID : " + value.getStudentId() + "\n수강생이름 : " + value.getMemberName() + "'\n수강신청한과목 : " + value.getSubjectList().toString());
+                if (student.isEmpty()) {
+                    System.out.println("조회 할 수 있는 수강생이 없습니다.");
+                } else {
+                    System.out.println("등록된 수강생은 " + student.size() + "명 입니다.");
+                    for (Student value : student) {
+                        System.out.println(" 수강생ID : " + value.getStudentId() + "\n수강생이름 : " + value.getMemberName() + "'\n수강신청한과목 : " + value.getSubjectList().toString());
+                    }
                 }
                 break;
             }
-//        if(number == 2) {
-//            System.out.println("조회하실 수강생 이름을 입력해주세요.");
-//            Scanner na = new Scanner(System.in);
-//            String sname = na.nextLine();
+
+//            ///////////////////선택 사항///////////////////
+//            if (number == 2) {
+//                List<Student> student = repository.findAllStudent();
+//                System.out.println("조회하실 수강생 이름을 입력해주세요.");
+//                Scanner na = new Scanner(System.in);
+//                String sname = na.nextLine();
+//                for (Student value : student) {
+//                    if (value.getMemberName().equals(sname)) {
+//                        System.out.println(" 수강생ID : " + value.getStudentId() + "\n수강생이름 : " + value.getMemberName() + "'\n수강신청한과목 : " + value.getSubjectList().toString());
+//                    }
+//                }
+//                break;
+//            }
 //
-//        }
-//        if(number == 3) {
-//            System.out.println("조회하실 수강생 고유번호를 입력해주세요.");
-//            Scanner nu = new Scanner(System.in);
-//            int snumber = sc.nextInt();
-//
-//        }
+//            if (number == 3) {
+//                List<Student> student = repository.findAllStudent();
+//                System.out.println("조회하실 수강생 고유번호를 입력해주세요.");
+//                Scanner nu = new Scanner(System.in);
+//                int snumber = sc.nextInt();
+//                for (Student value : student) {
+//                    if (value.getStudentId() == snumber) {
+//                        System.out.println(" 수강생ID : " + value.getStudentId() + "\n수강생이름 : " + value.getMemberName() + "'\n수강신청한과목 : " + value.getSubjectList().toString());
+//                    }
+//                }
+//                break;
+//            }
+//            ///////////////////선택 사항///////////////////
             else {
                 System.out.println("잘못 선택 하셨습니다.");
                 System.out.println("처음으로 돌아갑니다.");
             }
         }
     }
+}
 }
