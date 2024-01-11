@@ -17,4 +17,14 @@ public class MemoryRepository {
     private MemoryRepository() {
     }
 
+
+    public List<Score> findGradebyIdAndName(int studentId, String subjectName) {
+        List<Score> gradeList = this.scoreList;
+        for (Score score : scoreList) {
+            if (score.getStudent().getStudentId() == studentId && score.getSubject().getSubjectName().equals(subjectName)) {
+                gradeList.add(score);
+            }
+        }
+        return gradeList;
+    }
 }
