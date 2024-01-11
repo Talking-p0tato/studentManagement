@@ -13,4 +13,16 @@ public class Student {
         this.memberName = memberName;
         this.subjectList = subjectList;
     }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public String getMemberName() {
+        return memberName;
+    }
+
+    public List<Subject> getSubjectList() {
+        return subjectList;
+    }
 }
