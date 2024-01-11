@@ -28,6 +28,23 @@ public class MemoryRepository {
     }
 
 
+
+    //전체 수강생 목록 조회
+    public List<Student> findAllStudent() {
+        return studentList;
+    }
+
+    // 학생 등급 조회
+    public List<Score> findGradebyIdAndName(int studentId, String subjectName) {
+        List<Score> gradeList = this.scoreList;
+        for (Score score : scoreList) {
+            if (score.getStudent().getStudentId() == studentId && score.getSubject().getSubjectName().equals(subjectName)) {
+                gradeList.add(score);
+            }
+        }
+        return gradeList;
+    }
+
     //전체 수강생 목록 조회
     public List<Student> findAllStudent() {
         return studentList;
