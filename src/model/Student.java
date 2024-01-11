@@ -26,6 +26,8 @@ public class Student {
         return subjectList;
     }
 
+
+
     public void setStudentId(int studentId) {
         this.studentId = studentId;
     }
@@ -37,4 +39,5 @@ public class Student {
     public void setSubjectList(List<Subject> subjectList) {
         this.subjectList = subjectList;
     }
+
 }
