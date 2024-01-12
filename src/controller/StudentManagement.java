@@ -1,4 +1,4 @@
-package controller;
+package Controller;
 import model.*;
 
 import model.MemoryRepository;
@@ -7,6 +7,7 @@ import view.InputView;
 import view.OutputView;
 
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import java.util.List;
@@ -105,7 +106,7 @@ public class StudentManagement {
         scoreToUpdate.setGrade();
 
         // 변경 사항을 저장소에 반영
-        repository.updateTestScore(studentId, selectedSubject.getSubjectName(), roundNumber, newScore);
+        repository.updateTestScore(studentId, selectedSubject.getSubjectId(), roundNumber, newScore);
 
         // 업데이트 확인 메시지 출력
         OutputView.showConfirmUpdateStudentScore();
@@ -204,29 +205,6 @@ public class StudentManagement {
         OutputView.showStudentList();
         Scanner sc = new Scanner(System.in);
         int input = sc.nextInt();
-
-        switch (input) {
-            case 1:
-                if (repository.getStudentList().isEmpty()) {
-                    System.out.println("조회 할 수 있는 수강생이 없습니다.");
-                } else {
-                    System.out.println("등록된 수강생은 " + repository.getStudentList() + "명 입니다.");
-                    for (Student value : repository.getStudentList()) {
-                if (repository.getStudentList().isEmpty()) {
-                    System.out.println("조회 할 수 있는 수강생이 없습니다.");
-                } else {
-                    System.out.println("등록된 수강생은 " + repository.getStudentList() + "명 입니다.");
-                    for (Student value : repository.getStudentList()) {
-                        System.out.println(" 수강생ID : " + value.getStudentId() + "\n수강생이름 : " + value.getMemberName() + "'\n수강신청한과목 : " + value.getSubjectList().toString());
-                    }
-                }
-                break;
-            case 0:
-                //수강생 관리 프로그램 메인 화면으로 돌아가기
-            default:
-                OutputView.failShowStudentList();
-                showStudentInfo(); //잘못 입력했을시 수강생 목록화면 다시 출력
-        }
     }
 
     // 수강생 추가 메서드
