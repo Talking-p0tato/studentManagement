@@ -23,23 +23,22 @@ public class MemoryRepository {
         return subjectList;
     }
 
-
     public static MemoryRepository getInstance() {
         return instance;
     }
 
     private MemoryRepository() {
         //필수
-        subjectList.add(new Subject(1, "java", "필수"));
-        subjectList.add(new Subject(2, "객체지향", "필수"));
-        subjectList.add(new Subject(3, "spring", "필수"));
-        subjectList.add(new Subject(4, "jpa", "필수"));
-        subjectList.add(new Subject(5, "mysql", "필수"));
+        subjectList.add(new Subject(1,"java","필수"));
+        subjectList.add(new Subject(2,"객체지향","필수"));
+        subjectList.add(new Subject(3,"spring","필수"));
+        subjectList.add(new Subject(4,"jpa","필수"));
+        subjectList.add(new Subject(5,"mysql","필수"));
         //선택
-        subjectList.add(new Subject(5, "디자인패턴", "선택"));
-        subjectList.add(new Subject(5, "spring security", "선택"));
-        subjectList.add(new Subject(5, "redis", "선택"));
-        subjectList.add(new Subject(5, "mongodb", "선택"));
+        subjectList.add(new Subject(5,"디자인패턴","선택"));
+        subjectList.add(new Subject(5,"spring security","선택"));
+        subjectList.add(new Subject(5,"redis","선택"));
+        subjectList.add(new Subject(5,"mongodb","선택"));
     }
 
     //학생 등록
@@ -94,8 +93,17 @@ public class MemoryRepository {
         newScore.setScore(score);
         newScore.setGrade();
     }
-    //전체 수강생 목록 조회
 
+
+    // 특정 학생 특정 과목 모든 회차의 점수
+    public List<Score> findAllScoresBySubject(int studentId, int subjectId) {
+        return scoreList.stream()
+                .filter(score -> score.getStudent().getStudentId() == studentId)
+                .filter(score -> score.getSubject().getSubjectId() == subjectId)
+                .collect(Collectors.toList());
+    }
+
+    //전체 수강생 목록 조회
     public List<Student> findAllStudent() {
         return studentList;
     }
@@ -110,6 +118,9 @@ public class MemoryRepository {
         }
         return gradeList;
     }
+    //
+    // true면 학생이 과목이 신청한 적이 있으니 진행
+    // false면 잘못된 입력이니까 다시 시도
 
     // 학생이 수강한 과목이 맞는지 유효성 검사
     public boolean isValidSubject(int studentId, String subjectName) {
@@ -145,5 +156,3 @@ public class MemoryRepository {
     }
 
 }
-
-
