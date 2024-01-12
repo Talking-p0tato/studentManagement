@@ -41,7 +41,6 @@ public class MemoryRepository {
         subjectList.add(new Subject(9, "mongodb", "선택"));
     }
 
-
     //학생 등록
     public void addMember(String name, List<Subject> subjectList) {
         Student student = new Student(memberIdx++, name, subjectList);
@@ -73,6 +72,17 @@ public class MemoryRepository {
                 .findFirst()
                 .orElse(null);
     }
+
+    //학생 선택과목 회차별 등급조회
+    public List<Score> findAllScoreRecord(int studentId, int subjectId) {
+        List<Score> studentAllScore = new ArrayList<>();
+        for (Score score : scoreList) {
+            if (score.getStudent().getStudentId() == studentId && score.getSubject().getSubjectId() == subjectId) {
+                studentAllScore.add(score);
+            }
+        }
+        return studentAllScore;
+    }
     //true : 해당 과목에 차수에 대한 점수 존재, false : 해당 과목 차수에 대한 점수 없음
 
 
@@ -84,10 +94,9 @@ public class MemoryRepository {
             return false;
         }
     }
-
     // 수강생의 과목별 시험 회차 및 점수를 업데이트하는 메소드
 
-    public void updateTestScore(int studentId, String subjectName, int round, int score) {
+    public void updateTestScore(int studentId, int subjectName, int round, int score) {
         // 회차와 점수의 유효성 검사
         if (round < 1 || round > 10 || score < 0 || score > 100) {
             throw new IllegalArgumentException("잘못 된 점수 입니다.");
@@ -107,11 +116,13 @@ public class MemoryRepository {
     }
 
     //전체 수강생 목록 조회
+
     public List<Student> findAllStudent() {
         return studentList;
     }
 
     // 학생 등급 조회
+
     public List<Score> findGradeByIdAndName(int studentId, String subjectName) {
         List<Score> gradeList = this.scoreList;
         for (Score score : scoreList) {
@@ -136,9 +147,9 @@ public class MemoryRepository {
 
     //점수가 범위 안인지 유효성 검사
     public boolean validateAndParseScore(int inputScore) {
-            if (isValidScore(inputScore)) {
-                return true;
-            } else return false;
+        if (isValidScore(inputScore)) {
+            return true;
+        } else return false;
 
 
     }
@@ -149,9 +160,9 @@ public class MemoryRepository {
     }
 
     // 과목이름에 해당하는 과목객체를 반환하는 메서드
-    public Subject getSubjectById(int subjectId){
-        for(Subject subject : getSubjectList()){
-            if(subject.getSubjectId()==subjectId){
+    public Subject getSubjectById(int subjectId) {
+        for (Subject subject : getSubjectList()) {
+            if (subject.getSubjectId() == subjectId) {
                 return subject;
             }
         }
