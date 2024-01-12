@@ -37,6 +37,9 @@ public class MemoryRepository {
         subjectList.add(new Subject(5,"spring security","선택"));
         subjectList.add(new Subject(5,"redis","선택"));
         subjectList.add(new Subject(5,"mongodb","선택"));
+
+        studentMap.put(1,new Student(1,"범진님", subjectList));
+        studentMap.put(2,new Student(2,"건우", subjectList));
     }
 
     //학생 등록
