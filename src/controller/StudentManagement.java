@@ -19,7 +19,6 @@ public class StudentManagement {
     
 
 
-
     private boolean isValidRound(int round) {
         return round >= 1 && round <= 10; // 유효한 범위 안에 있을 때 true
     }
@@ -340,5 +339,3 @@ public class StudentManagement {
         }
     }
 }
-
-
