@@ -64,18 +64,18 @@ public class MemoryRepository {
         return !findStudentById(studentId).isEmpty();
     }
 
-    public Score findScoreRecord(int studentId, String subjectName, int round) {
+    public Score findScoreRecord(int studentId, int subjectId, int round) {
         return scoreList.stream()
                 .filter(score -> score.getStudent().getStudentId() == studentId)
-                .filter(score -> score.getSubject().getSubjectName().equals(subjectName))
+                .filter(score -> score.getSubject().getSubjectId() == subjectId)
                 .filter(score -> score.getRound() == round)
                 .findFirst()
                 .orElse(null);
     }
     //true : 해당 과목에 차수에 대한 점수 존재, false : 해당 과목 차수에 대한 점수 없음
 
-    public boolean isScoreRecordExist(int studentId, String subjectName, int round) {
-        if (findScoreRecord(studentId, subjectName, round) != null) {
+    public boolean isScoreRecordExist(int studentId, int subjectId, int round) {
+        if (findScoreRecord(studentId, subjectId, round) != null) {
             return true;
         } else {
             return false;
@@ -123,12 +123,12 @@ public class MemoryRepository {
     // false면 잘못된 입력이니까 다시 시도
 
     // 학생이 수강한 과목이 맞는지 유효성 검사
-    public boolean isValidSubject(int studentId, String subjectName) {
+    public boolean isValidSubject(int studentId, int subjectId) {
         Student student = getStudentList().get(studentId);
 
         List<Subject> subjectList1 = student.getSubjectList();
 
-        return subjectList1.contains(subjectName);
+        return subjectList1.contains(subjectId);
     }
 
     //점수가 범위 안인지 유효성 검사
@@ -146,9 +146,9 @@ public class MemoryRepository {
     }
 
     // 과목이름에 해당하는 과목객체를 반환하는 메서드
-    public Subject getSubjectByName(String subjectName){
+    public Subject getSubjectById(int subjectId){
         for(Subject subject : getSubjectList()){
-            if(subject.getSubjectName().equals(subjectName)){
+            if(subject.getSubjectId()==subjectId){
                 return subject;
             }
         }

@@ -1,20 +1,12 @@
 package view;
 
-
-import java.sql.SQLOutput;
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 import model.Score;
 import model.Student;
 import model.Subject;
 
-import java.sql.SQLOutput;
-import java.util.List;
 
-import java.util.stream.IntStream;
-import java.util.Scanner;
 
 public class OutputView {
 

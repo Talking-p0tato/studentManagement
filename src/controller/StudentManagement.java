@@ -1,9 +1,10 @@
 package controller;
 import model.*;
-import view.OutputView;
+
 import model.MemoryRepository;
 import model.Student;
-
+import view.InputView;
+import view.OutputView;
 
 import java.util.Scanner;
 
@@ -12,10 +13,8 @@ import java.util.List;
 
 public class StudentManagement {
 
-    private MemoryRepository repository;
-    private OutputView outputView;
-    private Scanner scanner;
-
+    private MemoryRepository repository = MemoryRepository.getInstance();
+    
     private boolean isValidRound(int round) {
         return round >= 1 && round <= 10; // 유효한 범위 안에 있을 때 true
     }
@@ -23,17 +22,12 @@ public class StudentManagement {
     private boolean isValidScore(int score) {
         return score >= 0 && score <= 100;
     }
-
-    public StudentManagement(MemoryRepository repository, OutputView outputView) {
-        this.repository = repository;
-        this.outputView = outputView;
-        this.scanner = new Scanner(System.in);
-    }
+    
 
     public void showAndSelectSubject(Student student) {
         // 유효성 검사 메서드 필요함 hasSubject
         // 과목 목록 출력
-        outputView.showStudentSubjectList(student.getMemberName(), student.getSubjectList());
+        OutputView.showStudentSubjectList(student.getMemberName(), student.getSubjectList());
 
         int subjectNumber = scanner.nextInt();
         scanner.nextLine();
@@ -49,7 +43,7 @@ public class StudentManagement {
                 .orElse(null);
 
         if (selectedSubject == null) {
-            outputView.showError("선택한 과목이 목록에 없습니다.");
+            OutputView.showError("선택한 과목이 목록에 없습니다.");
             return;
         }
 
@@ -62,7 +56,7 @@ public class StudentManagement {
         List<Score> scores = repository.findAllScoresBySubject(studentId, selectedSubject.getSubjectId());
 
         // 회차 및 점수 출력
-        outputView.showUpdateStudentRoundGrade(selectedSubject.getSubjectName(), scores);
+        OutputView.showUpdateStudentRoundGrade(selectedSubject.getSubjectName(), scores);
 
         // 회차 선택
         int roundNumber;
@@ -71,13 +65,13 @@ public class StudentManagement {
             roundNumber = scanner.nextInt();
             scanner.nextLine();
             if (!isValidRound(roundNumber)) {
-                outputView.showError("회차 번호는 1에서 10 사이여야 합니다.");
+                OutputView.showError("회차 번호는 1에서 10 사이여야 합니다.");
                 roundNumber = -1;
             }
         } while (roundNumber == -1);
 
         // 점수 수정 안내 메시지 출력
-        outputView.promptForScoreUpdate();
+        OutputView.promptForScoreUpdate();
 
         // 회차에 해당하는 점수 객체 찾기
         int finalRoundNumber = roundNumber;
@@ -87,7 +81,7 @@ public class StudentManagement {
                 .orElse(null);
 
         if (scoreToUpdate == null) {
-            outputView.showError("선택한 회차가 목록에 없습니다.");
+            OutputView.showError("선택한 회차가 목록에 없습니다.");
             return;
         }
 
@@ -97,7 +91,7 @@ public class StudentManagement {
             newScore = scanner.nextInt();
             scanner.nextLine();
             if (!isValidScore(newScore)) {
-                outputView.showError("점수는 0에서 100 사이여야 합니다.");
+                OutputView.showError("점수는 0에서 100 사이여야 합니다.");
                 newScore = -1;
             }
         } while (newScore == -1);
@@ -110,32 +104,20 @@ public class StudentManagement {
         repository.updateTestScore(studentId, selectedSubject.getSubjectName(), roundNumber, newScore);
 
         // 업데이트 확인 메시지 출력
-        outputView.showConfirmUpdateStudentScore();
+        OutputView.showConfirmUpdateStudentScore();
 
         // 점수 수정 후 점수 관리로 돌아감.
-        outputView.showStudentScoreManageInfo();
+        OutputView.showStudentScoreManageInfo();
 
     }
-
-
-
-
-
-public class StudentManagement {
-    public  int studentId;
-    public  int menuSelect;
-
-    public  String subjectName;
-
-    public  int round;
-    public int score;
-    OutputView outputView= new OutputView();
+    
+    InputView inputView = new InputView();
     Scanner scanner = new Scanner(System.in);
 
     public void processStudentManage() {
-        outputView.showAddStudentIdScreen();
-        studentId = scanner.nextInt();
-        if (MemoryRepository.getInstance().isStudentExist(studentId)) {
+        OutputView.showAddStudentIdScreen();
+        int studentId = scanner.nextInt();
+        if (repository.isStudentExist(studentId)) {
             selectStudentManageInfo(studentId);
         }else {
             System.out.println("해당 ID를 가진 학생이 없습니다. 다시 입력해주세요.");
@@ -144,8 +126,8 @@ public class StudentManagement {
     }
 
     private void selectStudentManageInfo(int studentId) {
-        outputView.showStudentScoreManageInfo();
-        menuSelect = scanner.nextInt();
+        OutputView.showStudentScoreManageInfo();
+        int menuSelect = scanner.nextInt();
         switch (menuSelect) {
             case 0:
                 //메인메뉴로 진입하는 메서드
@@ -160,56 +142,56 @@ public class StudentManagement {
                 //과목별 회차 점수 수정 메서드
                 break;
             default :
-                outputView.showWrongAddContext();
+                OutputView.showWrongAddContext();
                 selectStudentManageInfo(studentId);
         }
     }
 
     //4-1 페이지 작동 로직
     public void AddStudentScoreProcess(int studentId) {
-        outputView.showAddSubjectRoundScoreFrontScreen();
-        //학생이 수강한 과목정보를 출력하는 메서드
+        OutputView.showAddSubjectRoundScoreFrontScreen();
+        //학생이 선택한 과목 출력
         AddSubjectNameProcess(studentId);
     }
 
     public void AddSubjectNameProcess(int studentId){
-        outputView.showAddSubjectNameScreen();
-        subjectName = scanner.next();
+        OutputView.showAddSubjectNameScreen();
+        int subjectId = scanner.nextInt();
 
-        if (MemoryRepository.getInstance().isValidSubject(studentId, subjectName)){
-            AddRondProcess(studentId,subjectName);
+        if (repository.isValidSubject(studentId, subjectId)){
+            AddRondProcess(studentId,subjectId);
         }else {
-            outputView.showWrongAddContext();
+            OutputView.showWrongAddContext();
             AddSubjectNameProcess(studentId);
         }
 
     }
 
-    public void AddRondProcess(int studentId, String subjectName){
-        outputView.showAddRoundScreen();
-        round = scanner.nextInt();
-        if (MemoryRepository.getInstance().isScoreRecordExist(studentId, subjectName, round)){
-            AddScoreProcess(studentId, subjectName, round);
+    public void AddRondProcess(int studentId, int subjectId){
+        OutputView.showAddRoundScreen();
+        int round = scanner.nextInt();
+        if (repository.isScoreRecordExist(studentId, subjectId, round)){
+            AddScoreProcess(studentId, subjectId, round);
         }else {
-            outputView.showWrongAddContext();
-            AddRondProcess(studentId, subjectName);
+            OutputView.showWrongAddContext();
+            AddRondProcess(studentId, subjectId);
         }
     }
 
-    public void AddScoreProcess(int studentId,String subjectName, int round){
-        outputView.showAddScoreScreen();
+    public void AddScoreProcess(int studentId,int subjectId, int round){
+        OutputView.showAddScoreScreen();
         int score = scanner.nextInt();
-        if (MemoryRepository.getInstance().validateAndParseScore(score)) {
-            MemoryRepository.getInstance().addTestScore(
-                    MemoryRepository.getInstance().getStudentList().get(studentId),
-                    MemoryRepository.getInstance().getSubjectByName(subjectName),
+        if (repository.validateAndParseScore(score)) {
+            repository.addTestScore(
+                    repository.getStudentList().get(studentId),
+                    repository.getSubjectById(subjectId),
                     round,
                     score);
-            outputView.showConfirmAddStudentScore();
+            OutputView.showConfirmAddStudentScore();
             selectStudentManageInfo(studentId);
         } else {
-            outputView.showWrongAddContext();
-                AddScoreProcess(studentId, subjectName, round);
+            OutputView.showWrongAddContext();
+                AddScoreProcess(studentId, subjectId, round);
         }
     }
     // ------- 4 - 1여기까지 작동로직-----
@@ -221,11 +203,11 @@ public class StudentManagement {
 
         switch (input) {
             case 1:
-                if (MemoryRepository.getInstance().getStudentList().isEmpty()) {
+                if (repository.getStudentList().isEmpty()) {
                     System.out.println("조회 할 수 있는 수강생이 없습니다.");
                 } else {
-                    System.out.println("등록된 수강생은 " + MemoryRepository.getInstance().getStudentList() + "명 입니다.");
-                    for (Student value : MemoryRepository.getInstance().getStudentList()) {
+                    System.out.println("등록된 수강생은 " + repository.getStudentList() + "명 입니다.");
+                    for (Student value : repository.getStudentList()) {
                 if (repository.getStudentList().isEmpty()) {
                     System.out.println("조회 할 수 있는 수강생이 없습니다.");
                 } else {
