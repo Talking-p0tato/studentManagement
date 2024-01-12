@@ -1,9 +1,10 @@
-package model;
+package controller;
 
-import java.util.Optional;
+import model.MemoryRepository;
+import model.Student;
+import view.OutputView;
+
 import java.util.Scanner;
-
-import java.util.List;
 
 
 public class StudentManagement {

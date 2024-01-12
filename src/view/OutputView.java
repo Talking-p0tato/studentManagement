@@ -1,4 +1,4 @@
-package model;
+package view;
 
 import java.sql.SQLOutput;
 import java.util.List;
@@ -41,6 +41,8 @@ public class OutputView {
         //상세메뉴번호 입력 인풋
         // 잘못된 번호 또는 문자 입력시 System.out.println("잘못된 입력입니다. 다시입력해주세요.") -> 상세메뉴 입력화면
     }
+
+    //4-1 학생이 수강한 과목 리스트 출력문
 
     //4-1 (과목별) 시험 회차 및 점수 등록 입력 받는 출력문
     //과목 고유번호 따로, 회차, 점수 별로나눠서 인풋 받기
