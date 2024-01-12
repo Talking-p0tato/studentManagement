@@ -11,7 +11,7 @@ public class MemoryRepository {
     private List<Student> studentList = new ArrayList<>();
     private List<Score> scoreList = new ArrayList<>();
     private List<Subject> subjectList = new ArrayList<>();
-    private int memberIdx = 1;
+    private int memberIdx = 0;
 
     private static final MemoryRepository instance = new MemoryRepository();
 
@@ -29,17 +29,18 @@ public class MemoryRepository {
 
     private MemoryRepository() {
         //필수
-        subjectList.add(new Subject(1,"java","필수"));
-        subjectList.add(new Subject(2,"객체지향","필수"));
-        subjectList.add(new Subject(3,"spring","필수"));
-        subjectList.add(new Subject(4,"jpa","필수"));
-        subjectList.add(new Subject(5,"mysql","필수"));
+        subjectList.add(new Subject(1, "java", "필수"));
+        subjectList.add(new Subject(2, "객체지향", "필수"));
+        subjectList.add(new Subject(3, "spring", "필수"));
+        subjectList.add(new Subject(4, "jpa", "필수"));
+        subjectList.add(new Subject(5, "mysql", "필수"));
         //선택
-        subjectList.add(new Subject(5,"디자인패턴","선택"));
-        subjectList.add(new Subject(5,"spring security","선택"));
-        subjectList.add(new Subject(5,"redis","선택"));
-        subjectList.add(new Subject(5,"mongodb","선택"));
+        subjectList.add(new Subject(6, "디자인패턴", "선택"));
+        subjectList.add(new Subject(7, "spring security", "선택"));
+        subjectList.add(new Subject(8, "redis", "선택"));
+        subjectList.add(new Subject(9, "mongodb", "선택"));
     }
+
 
     //학생 등록
     public void addMember(String name, List<Subject> subjectList) {
@@ -74,8 +75,10 @@ public class MemoryRepository {
     }
     //true : 해당 과목에 차수에 대한 점수 존재, false : 해당 과목 차수에 대한 점수 없음
 
+
     public boolean isScoreRecordExist(int studentId, int subjectId, int round) {
         if (findScoreRecord(studentId, subjectId, round) != null) {
+
             return true;
         } else {
             return false;
@@ -107,8 +110,8 @@ public class MemoryRepository {
     public List<Student> findAllStudent() {
         return studentList;
     }
-    // 학생 등급 조회
 
+    // 학생 등급 조회
     public List<Score> findGradeByIdAndName(int studentId, String subjectName) {
         List<Score> gradeList = this.scoreList;
         for (Score score : scoreList) {
