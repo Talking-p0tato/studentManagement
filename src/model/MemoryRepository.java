@@ -2,6 +2,11 @@ package model;
 
 import java.util.*;
 
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class MemoryRepository {
 
@@ -11,6 +16,10 @@ public class MemoryRepository {
     private int memberIdx = 1;
 
     private static final MemoryRepository instance = new MemoryRepository();
+
+    public List<Subject> getSubjectList() {
+        return subjectList;
+    }
 
     public static MemoryRepository getInstance() {
         return instance;
@@ -78,6 +87,7 @@ public class MemoryRepository {
     }
 
     // 수강생의 과목별 시험 회차 및 점수를 업데이트하는 메소드
+
     public void updateTestScore(int studentId, String subjectName, int round, int score) {
         // 회차와 점수의 유효성 검사
         vaildateRoundScore(round, score);
@@ -91,6 +101,7 @@ public class MemoryRepository {
             throw new IllegalArgumentException("잘못 된 점수 입니다.");
         }
     }
+
 
     //전체 수강생 목록 조회
     public List<Student> findAllStudent() {
