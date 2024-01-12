@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 public class MemoryRepository {
 
@@ -82,6 +82,7 @@ public class MemoryRepository {
             return false;
         }
     }
+
     // 수강생의 과목별 시험 회차 및 점수를 업데이트하는 메소드
 
     public void updateTestScore(int studentId, String subjectName, int round, int score) {
@@ -94,6 +95,14 @@ public class MemoryRepository {
         newScore.setGrade();
     }
     //전체 수강생 목록 조회
+
+    // 특정 학생 특정 과목 모든 회차의 점수
+    public List<Score> findAllScoresBySubject(int studentId, int subjectId) {
+        return scoreList.stream()
+                .filter(score -> score.getStudent().getStudentId() == studentId)
+                .filter(score -> score.getSubject().getSubjectId() == subjectId)
+                .collect(Collectors.toList());
+    }
 
     public List<Student> findAllStudent() {
         return studentList;
@@ -109,5 +118,7 @@ public class MemoryRepository {
         }
         return gradeList;
     }
+    //
+    // true면 학생이 과목이 신청한 적이 있으니 진행
+    // false면 잘못된 입력이니까 다시 시도
 }
-
