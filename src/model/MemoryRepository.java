@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 public class MemoryRepository {
 
@@ -81,6 +81,7 @@ public class MemoryRepository {
             return false;
         }
     }
+
     // 수강생의 과목별 시험 회차 및 점수를 업데이트하는 메소드
 
     public void updateTestScore(int studentId, String subjectName, int round, int score) {
@@ -108,5 +109,6 @@ public class MemoryRepository {
         }
         return gradeList;
     }
+
 }
 
