@@ -27,6 +27,7 @@ public class StudentManagement {
                 //수강생 관리 프로그램 메인 화면으로 돌아가기
             default:
                 OutputView.failShowStudentList();
+                showStudentInfo(); //잘못 입력했을시 수강생 목록화면 다시 출력
         }
     }
 }
