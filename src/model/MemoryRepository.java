@@ -33,10 +33,10 @@ public class MemoryRepository {
         subjectList.add(new Subject(4,"jpa","필수"));
         subjectList.add(new Subject(5,"mysql","필수"));
         //선택
-        subjectList.add(new Subject(5,"디자인패턴","선택"));
-        subjectList.add(new Subject(5,"spring security","선택"));
-        subjectList.add(new Subject(5,"redis","선택"));
-        subjectList.add(new Subject(5,"mongodb","선택"));
+        subjectList.add(new Subject(6,"디자인패턴","선택"));
+        subjectList.add(new Subject(7,"spring security","선택"));
+        subjectList.add(new Subject(8,"redis","선택"));
+        subjectList.add(new Subject(9,"mongodb","선택"));
 
         studentMap.put(1,new Student(1,"범진님", subjectList));
         studentMap.put(2,new Student(2,"건우", subjectList));
@@ -62,6 +62,15 @@ public class MemoryRepository {
         }
     }
 
+    public Subject findSubjectById(int subjectId) {
+        for (Subject subject : subjectList) {
+            if(subject.getSubjectId() == subjectId) {
+                return subject;
+            }
+        }
+        return null;
+    }
+
     //true : id를 가진 학생 있음, false : id를 가진 학생 없음
     public boolean isStudentExist(int studentId) {
         if(findStudentById(studentId) != null) {
@@ -70,10 +79,10 @@ public class MemoryRepository {
         return false;
     }
 
-    public Score findScoreRecord(int studentId, String subjectName, int round) {
+    public Score findScoreRecord(int studentId, int subjectId, int round) {
         return scoreList.stream()
                 .filter(score -> score.getStudent().getStudentId() == studentId)
-                .filter(score -> score.getSubject().getSubjectName().equals(subjectName))
+                .filter(score -> score.getSubject().getSubjectId() == subjectId)
                 .filter(score -> score.getRound() == round)
                 .findFirst()
                 .orElse(null);
@@ -81,8 +90,8 @@ public class MemoryRepository {
 
     //true : 해당 과목에 차수에 대한 점수 존재, false : 해당 과목 차수에 대한 점수 없음
     //등록은 false일 때, 수정은 true일 때 만 가능
-    public boolean isScoreRecordExist(int studentId, String subjectName, int round) {
-        if(findScoreRecord(studentId, subjectName, round) != null) {
+    public boolean isScoreRecordExist(int studentId, int subjectId, int round) {
+        if(findScoreRecord(studentId, subjectId, round) != null) {
             return true;
         } else {
             return false;
@@ -90,16 +99,14 @@ public class MemoryRepository {
     }
 
     // 수강생의 과목별 시험 회차 및 점수를 업데이트하는 메소드
-
-    public void updateTestScore(int studentId, String subjectName, int round, int score) {
+    public void updateTestScore(int studentId, int subjectId, int round, int score) {
         // 회차와 점수의 유효성 검사
-        vaildateRoundScore(round, score);
-        Score newScore = findScoreRecord(studentId, subjectName, round);
+        Score newScore = findScoreRecord(studentId, subjectId, round);
         newScore.setScore(score);
         newScore.setGrade();
     }
 
-    private void vaildateRoundScore(int round, int score) {
+    private void validateRoundScore(int round, int score) {
         if (round < 1 || round > 10 || score < 0 || score > 100) {
             throw new IllegalArgumentException("잘못 된 점수 입니다.");
         }
@@ -137,4 +144,3 @@ public class MemoryRepository {
         return false;
     }
 }
-

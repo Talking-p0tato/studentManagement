@@ -9,9 +9,29 @@ import java.util.List;
 
 public class OutputView {
 
+    public static void delayChangeScreen() {
+        for (int i = 2; i > 0; i--) {
+            System.out.println("(" + i + "초후 메뉴판으로 돌아갑니다.)");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println();
+    }
+
     public static void incorrectMenu() {
         System.out.println("잘못된 메뉴 선택입니다. 다시 입력해 주세요.");
-    };
+    }
+
+    public static void duplicateRound() {
+        System.out.println("이미 점수가 등록된 회차 입니다. 다시 입력해 주세요.");
+    }
+
+    public static void completeSetScore() {
+        System.out.println("점수 등록이 완료되었습니다.");
+    }
 
     public static void printMainMenu() {
         System.out.println("|]=======[ Spring Track 수강생 관리 프로그램 ]=======[|");
@@ -34,15 +54,19 @@ public class OutputView {
         } else {
             System.out.println("등록된 수강생은 " + studentList.size() + "명 입니다.");
             for (Student student : studentList) {
-                System.out.println("수강생ID : " + student.getStudentId() +
-                                   "\n수강생이름 : " + student.getMemberName() +
-                                   "\n수강신청한과목 : ");
-                List<String> subjectNameList = new ArrayList<>();
+                System.out.print("수강생ID : " + student.getStudentId() +
+                                   "\n수강생이름 : " + student.getMemberName() + "\n");
+                List<String> requiredSubjectNameList = new ArrayList<>();
+                List<String> optionalSubjectNameList = new ArrayList<>();
                 for(Subject subject : student.getSubjectList()) {
-                    subjectNameList.add(subject.getSubjectName());
+                    if(subject.getType().equals("필수")) {
+                        requiredSubjectNameList.add(subject.getSubjectName());
+                    }else if (subject.getType().equals("선택")){
+                        optionalSubjectNameList.add(subject.getSubjectName());
+                    }
                 }
-                System.out.print(subjectNameList.toString());
-                System.out.println();
+                System.out.println("신청한 필수 과목 : " + requiredSubjectNameList.toString());
+                System.out.println("신청한 선택 과목 : " + optionalSubjectNameList.toString());
                 System.out.println();
             }
         }
