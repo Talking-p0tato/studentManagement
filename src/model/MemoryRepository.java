@@ -120,6 +120,25 @@ public class MemoryRepository {
         return subjectList1.contains(subjectName);
     }
 
+    //점수가 범위 안인지 유효성 검사
+    public boolean validateAndParseScore(String inputScore) {
+        try {
+            int score = Integer.parseInt(inputScore);
+
+            if (isValidScore(score)) {
+                return true;
+            } else {
+                throw new IllegalArgumentException("점수는 1부터 100 사이여야 합니다.");
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("숫자 형식의 점수를 입력해주세요.");
+        }
+    }
+
+    private boolean isValidScore(int score) {
+        return score >= 1 && score <= 100;
+
+    }
 
 
 }
