@@ -16,7 +16,6 @@ public class Subject {
     }
 
 
-
     public void setSubjectId(int subjectId) {
         this.subjectId = subjectId;
     }

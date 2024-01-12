@@ -65,18 +65,20 @@ public class MemoryRepository {
         return !findStudentById(studentId).isEmpty();
     }
 
-    public Score findScoreRecord(int studentId, String subjectName, int round) {
+    public Score findScoreRecord(int studentId, int subjectId, int round) {
         return scoreList.stream()
                 .filter(score -> score.getStudent().getStudentId() == studentId)
-                .filter(score -> score.getSubject().getSubjectName().equals(subjectName))
+                .filter(score -> score.getSubject().getSubjectId() == subjectId)
                 .filter(score -> score.getRound() == round)
                 .findFirst()
                 .orElse(null);
     }
     //true : 해당 과목에 차수에 대한 점수 존재, false : 해당 과목 차수에 대한 점수 없음
 
-    public boolean isScoreRecordExist(int studentId, String subjectName, int round) {
-        if (findScoreRecord(studentId, subjectName, round) != null) {
+
+    public boolean isScoreRecordExist(int studentId, int subjectId, int round) {
+        if (findScoreRecord(studentId, subjectId, round) != null) {
+
             return true;
         } else {
             return false;
@@ -94,7 +96,7 @@ public class MemoryRepository {
         newScore.setScore(score);
         newScore.setGrade();
     }
-    //전체 수강생 목록 조회
+
 
     // 특정 학생 특정 과목 모든 회차의 점수
     public List<Score> findAllScoresBySubject(int studentId, int subjectId) {
@@ -104,6 +106,7 @@ public class MemoryRepository {
                 .collect(Collectors.toList());
     }
 
+    //전체 수강생 목록 조회
     public List<Student> findAllStudent() {
         return studentList;
     }
@@ -121,4 +124,38 @@ public class MemoryRepository {
     //
     // true면 학생이 과목이 신청한 적이 있으니 진행
     // false면 잘못된 입력이니까 다시 시도
+
+    // 학생이 수강한 과목이 맞는지 유효성 검사
+    public boolean isValidSubject(int studentId, int subjectId) {
+        Student student = getStudentList().get(studentId);
+
+        List<Subject> subjectList1 = student.getSubjectList();
+
+        return subjectList1.contains(subjectId);
+    }
+
+    //점수가 범위 안인지 유효성 검사
+    public boolean validateAndParseScore(int inputScore) {
+            if (isValidScore(inputScore)) {
+                return true;
+            } else return false;
+
+
+    }
+
+    private boolean isValidScore(int score) {
+        return score >= 1 && score <= 100;
+
+    }
+
+    // 과목이름에 해당하는 과목객체를 반환하는 메서드
+    public Subject getSubjectById(int subjectId){
+        for(Subject subject : getSubjectList()){
+            if(subject.getSubjectId()==subjectId){
+                return subject;
+            }
+        }
+        return null;
+    }
+
 }
