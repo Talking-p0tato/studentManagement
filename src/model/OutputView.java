@@ -37,7 +37,7 @@ public class OutputView {
     }
 
     //4-2 (과목별) 시험 회차별 등급 조회 입력 받는 출력문
-    public void showQuerySubjectRoundGradeScreen(){
+    public void showQuerySubjectRoundGradeScreenInput(){
         System.out.println("|]----수강생 과목 회차별 등급 조회----[|"+"\n");
         System.out.println("조회할 과목을 입력해주세요.");
         System.out.println("-> ");
@@ -46,4 +46,39 @@ public class OutputView {
     }
 
 
+    public void showStudentSubjectList(List<Subject> subjectList) {
+        //수강 과목 선택 화면
+        System.out.println("수강 과목");
+        //수강생이 수강한 수강과목 출력 로직
+        //ex)1. Java
+        //2. 객체지향
+        for(int i = 0; i < subjectList.size(); i ++) {
+            Subject studentSubject = subjectList.get(i);
+            System.out.printf("%d. %s", i + 1, studentSubject.getSubjectName());
+        }
+            System.out.println("0. 돌아가기");
+            System.out.print("->");
+            //과목 이름 인풋을 받음
+            //수강생이 수강한 과목이름이 아니거나 잘못된 입력 값이라면
+            //잘못된 입력입니다 다시입력해주세요. 출력 후 ->(회차 선택 화면)
+            //0을 입력시 수강생 점수관리 메인화면으로 이동 -> (printStudentScoreManageScreen())
+            //수강생의 수강 과목이 제대로 입력되면 아래문 출력
+
+    }
+
+    public void showUpdateStudentRoundGrade(String subject,List<Score> scoreList) {
+        // 수정 회차 선택화면
+        System.out.println("수정을 원하는 회차를 입력 해주세요.");
+        System.out.println("과목명 : "+ subject);
+        for(int i = 0; i < scoreList.size(); i++){
+            Score studentScore = scoreList.get(i);
+            System.out.printf("%d. %d회차 : %d"+"\n" ,i+1, studentScore.getRound(), studentScore.getScore());
+        }
+        System.out.println("0. 돌아가기");
+        System.out.println("->");
+    }
+
+    public void showConfirmUpdateStudentScore(){
+        System.out.println("수정되었습니다!");
+    }
 }
