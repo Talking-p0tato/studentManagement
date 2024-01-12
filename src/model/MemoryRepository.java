@@ -1,25 +1,18 @@
 package model;
 
-import java.util.*;
-
+import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class MemoryRepository {
 
     private Map<Integer, Student> studentMap = new HashMap<>();
     private List<Score> scoreList = new ArrayList<>();
-    private List<Subject> subjectList = new ArrayList<>();
+    private Map<Integer, Subject> subjectMap= new HashMap();
     private int memberIdx = 1;
 
     private static final MemoryRepository instance = new MemoryRepository();
-
-    public List<Subject> getSubjectList() {
-        return subjectList;
-    }
 
     public static MemoryRepository getInstance() {
         return instance;
@@ -27,25 +20,23 @@ public class MemoryRepository {
 
     private MemoryRepository() {
         //필수
-        subjectList.add(new Subject(1,"java","필수"));
-        subjectList.add(new Subject(2,"객체지향","필수"));
-        subjectList.add(new Subject(3,"spring","필수"));
-        subjectList.add(new Subject(4,"jpa","필수"));
-        subjectList.add(new Subject(5,"mysql","필수"));
+        subjectMap.put(1, new Subject(1, "java", "필수"));
+        subjectMap.put(2, new Subject(2, "객체지향", "필수"));
+        subjectMap.put(3, new Subject(3, "spring", "필수"));
+        subjectMap.put(4, new Subject(4, "jpa", "필수"));
+        subjectMap.put(5, new Subject(5, "mysql", "필수"));
         //선택
-        subjectList.add(new Subject(6,"디자인패턴","선택"));
-        subjectList.add(new Subject(7,"spring security","선택"));
-        subjectList.add(new Subject(8,"redis","선택"));
-        subjectList.add(new Subject(9,"mongodb","선택"));
-
-        studentMap.put(1,new Student(1,"범진님", subjectList));
-        studentMap.put(2,new Student(2,"건우", subjectList));
+        subjectMap.put(6, new Subject(6, "디자인패턴", "선택"));
+        subjectMap.put(7, new Subject(7, "spring security", "선택"));
+        subjectMap.put(8, new Subject(8, "redis", "선택"));
+        subjectMap.put(9, new Subject(9, "mongodb", "선택"));
     }
 
     //학생 등록
-    public void addMember(String name, List<Subject> subjectList) {
+    public Student addMember(String name, List<Subject> subjectList) {
         Student student = new Student(memberIdx, name, subjectList);
         studentMap.put(memberIdx++,student) ;
+        return student;
     }
 
    public void addTestScore(Student student, Subject subject, int round, int score) {
@@ -55,23 +46,27 @@ public class MemoryRepository {
     }
 
     public Student findStudentById(int studentId) {
-        if(studentMap.containsKey(studentId)) {
-            return studentMap.get(studentId);
-        } else {
-            return null;
-        }
+        return studentMap.getOrDefault(studentId, null);
     }
 
     public Subject findSubjectById(int subjectId) {
-        for (Subject subject : subjectList) {
-            if(subject.getSubjectId() == subjectId) {
-                return subject;
-            }
+            return subjectMap.getOrDefault(subjectId, null);
+    }
+
+    public String findSubjectNameById(int subjectId) {
+        return subjectMap.get(subjectId).getSubjectName();
+    }
+
+    public List<Subject> findAllSubject() {
+        List<Subject> subjectList = new ArrayList<>();
+        for (Map.Entry<Integer, Subject> subjectEntry : subjectMap.entrySet()) {
+            subjectList.add(subjectEntry.getValue());
         }
-        return null;
+        return subjectList;
     }
 
     //true : id를 가진 학생 있음, false : id를 가진 학생 없음
+
     public boolean isStudentExist(int studentId) {
         if(findStudentById(studentId) != null) {
             return true;
@@ -88,6 +83,17 @@ public class MemoryRepository {
                 .orElse(null);
     }
 
+
+    //학생 선택과목 회차별 등급조회
+    public List<Score> findAllScoreRecord(int studentId, int subjectId) {
+        List<Score> studentAllScore = new ArrayList<>();
+        for (Score score : scoreList) {
+            if (score.getStudent().getStudentId() == studentId && score.getSubject().getSubjectId() == subjectId) {
+                studentAllScore.add(score);
+            }
+        }
+        return studentAllScore;
+    }
     //true : 해당 과목에 차수에 대한 점수 존재, false : 해당 과목 차수에 대한 점수 없음
     //등록은 false일 때, 수정은 true일 때 만 가능
     public boolean isScoreRecordExist(int studentId, int subjectId, int round) {
@@ -105,14 +111,7 @@ public class MemoryRepository {
         newScore.setScore(score);
         newScore.setGrade();
     }
-
-    private void validateRoundScore(int round, int score) {
-        if (round < 1 || round > 10 || score < 0 || score > 100) {
-            throw new IllegalArgumentException("잘못 된 점수 입니다.");
-        }
-    }
-
-
+    
     //전체 수강생 목록 조회
     public List<Student> findAllStudent() {
         List<Student> studentList = new ArrayList<>();
@@ -121,7 +120,7 @@ public class MemoryRepository {
         }
         return studentList;
     }
-
+    
     // 학생 등급 조회
     public List<Score> findGradeByIdAndName(int studentId, String subjectName) {
         List<Score> gradeList = this.scoreList;
@@ -132,7 +131,24 @@ public class MemoryRepository {
         }
         return gradeList;
     }
+    //
 
+    //점수가 범위 안인지 유효성 검사
+    public boolean validateAndParseScore(int inputScore) {
+        if (isValidScore(inputScore)) {
+            return true;
+        } else return false;
+
+
+    }
+
+    private boolean isValidScore(int score) {
+        return score >= 1 && score <= 100;
+
+    }
+
+    // true면 학생이 과목이 신청한 적이 있으니 진행
+    // false면 잘못된 입력이니까 다시 시도
     //학생이 과목 신청한적 있는지 검증하는 메서드
     public boolean hasSubject(int studentId, int subjectId) {
         Student student = studentMap.get(studentId);

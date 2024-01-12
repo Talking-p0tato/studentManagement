@@ -5,12 +5,12 @@ import java.util.List;
 public class Student {
 
     private int studentId;
-    private String memberName;
+    private String studentName;
     private List<Subject> subjectList;
 
-    public Student(int studentId, String memberName, List<Subject> subjectList) {
+    public Student(int studentId, String studentName, List<Subject> subjectList) {
         this.studentId = studentId;
-        this.memberName = memberName;
+        this.studentName = studentName;
         this.subjectList = subjectList;
     }
 
@@ -18,25 +18,11 @@ public class Student {
         return studentId;
     }
 
-    public String getMemberName() {
-        return memberName;
+    public String getStudentName() {
+        return studentName;
     }
 
     public List<Subject> getSubjectList() {
         return subjectList;
     }
-
-
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
-    }
-
-    public void setMemberName(String memberName) {
-        this.memberName = memberName;
-    }
-
-    public void setSubjectList(List<Subject> subjectList) {
-        this.subjectList = subjectList;
-    }
-
 }

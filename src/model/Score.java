@@ -19,24 +19,12 @@ public class Score {
         return student;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
     public Subject getSubject() {
         return subject;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
-    }
-
     public int getRound() {
         return round;
-    }
-
-    public void setRound(int round) {
-        this.round = round;
     }
 
     public int getScore() {
