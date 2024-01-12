@@ -121,18 +121,12 @@ public class MemoryRepository {
     }
 
     //점수가 범위 안인지 유효성 검사
-    public boolean validateAndParseScore(String inputScore) {
-        try {
-            int score = Integer.parseInt(inputScore);
-
-            if (isValidScore(score)) {
+    public boolean validateAndParseScore(int inputScore) {
+            if (isValidScore(inputScore)) {
                 return true;
-            } else {
-                throw new IllegalArgumentException("점수는 1부터 100 사이여야 합니다.");
-            }
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("숫자 형식의 점수를 입력해주세요.");
-        }
+            } else return false;
+
+
     }
 
     private boolean isValidScore(int score) {
@@ -140,6 +134,15 @@ public class MemoryRepository {
 
     }
 
+    // 과목이름에 해당하는 과목객체를 반환하는 메서드
+    public Subject getSubjectByName(String subjectName){
+        for(Subject subject : getSubjectList()){
+            if(subject.getSubjectName().equals(subjectName)){
+                return subject;
+            }
+        }
+        return null;
+    }
 
 }
 
