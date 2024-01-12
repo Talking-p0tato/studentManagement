@@ -35,10 +35,10 @@ public class MemoryRepository {
         subjectList.add(new Subject(4,"jpa","필수"));
         subjectList.add(new Subject(5,"mysql","필수"));
         //선택
-        subjectList.add(new Subject(5,"디자인패턴","선택"));
-        subjectList.add(new Subject(5,"spring security","선택"));
-        subjectList.add(new Subject(5,"redis","선택"));
-        subjectList.add(new Subject(5,"mongodb","선택"));
+        subjectList.add(new Subject(6,"디자인패턴","선택"));
+        subjectList.add(new Subject(7,"spring security","선택"));
+        subjectList.add(new Subject(8,"redis","선택"));
+        subjectList.add(new Subject(9,"mongodb","선택"));
     }
 
     //학생 등록
@@ -71,6 +71,16 @@ public class MemoryRepository {
                 .filter(score -> score.getRound() == round)
                 .findFirst()
                 .orElse(null);
+    }
+    //학생 선택과목 회차별 등급조회
+    public List<Score> findAllScoreRecord(int studentId, int subjectId) {
+        List<Score> studentAllScore = new ArrayList<>();
+        for (Score score : scoreList) {
+            if(score.getStudent().getStudentId() == studentId && score.getSubject().getSubjectId() == subjectId) {
+                studentAllScore.add(score);
+            }
+        }
+        return studentAllScore;
     }
     //true : 해당 과목에 차수에 대한 점수 존재, false : 해당 과목 차수에 대한 점수 없음
 
