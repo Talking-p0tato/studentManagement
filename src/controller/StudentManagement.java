@@ -340,7 +340,7 @@ public class StudentManagement {
         // 회차 및 점수 출력
         OutputView.showUpdateStudentRoundGrade(repository.findSubjectNameById(subjectId), scores);
 
-        // 회차 선택
+        // 회차 선택.
         int roundNumber;
         while (true) {
             roundNumber = InputView.getUserIntInput();
