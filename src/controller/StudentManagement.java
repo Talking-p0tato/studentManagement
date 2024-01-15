@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import java.util.List;
-
-
 public class StudentManagement {
 
     MemoryRepository repository = MemoryRepository.getInstance();
@@ -231,37 +228,35 @@ public class StudentManagement {
             if (repository.hasSubject(studentId, inputSubjectId)) {
                 break;
             } else {
+                //일단 넣어놓음 변경해야함 (수정함)
                 OutputView.wrongInputStudentId();
             }
         }
         while (true) {
-                inputRound = InputView.getRoundByUser();
-                if (isValidRound(inputRound)) {
-                    if (!repository.isScoreRecordExist(studentId, inputSubjectId, inputRound)) {
-                        //유저에게 점수 입력받기
-                        while (true) {
-                            int inputScore = InputView.getScoreByUser();
-                            //점수 검증절차 넣어야함.(점수 검증 추가함 if else)
-                            if (isValidScore(inputScore)) {
-                                Student student = repository.findStudentById(studentId);
-                                Subject subject = repository.findSubjectById(inputSubjectId);
-                                repository.addTestScore(student, subject, inputRound, inputScore);
-                                OutputView.completeSetScore();
-                                OutputView.delayChangeScreen();
-                                selectStudentManageInfo(studentId);
-                                break;
-                            } else {
-                                OutputView.showWrongAddContext();
-                            }
-                        }
-                    } else {
-                        OutputView.duplicateRound();
+            inputRound = InputView.getRoundByUser();
+            if(isValidRound(inputRound)) {
+                if (!repository.isScoreRecordExist(studentId, inputSubjectId, inputRound)) {
+                    //유저에게 점수 입력받기
+                    int inputScore = InputView.getScoreByUser();
+                    //점수 검증절차 넣어야함.(if else로 점수 검증 절차 수정)
+                    if(isValidScore(inputScore)) {
+                        Student student = repository.findStudentById(studentId);
+                        Subject subject = repository.findSubjectById(inputSubjectId);
+                        repository.addTestScore(student, subject, inputRound, inputScore);
+                        OutputView.completeSetScore();
+                        OutputView.delayChangeScreen();
+                        selectStudentManageInfo(studentId);
+                        break;
+                    }else {
+                        OutputView.showWrongAddContext();
                     }
                 } else {
-                    //수정해야함.
-                    OutputView.showWrongAddContext();
+                    OutputView.duplicateRound();
                 }
-
+            } else {
+                //수정해야함.
+                OutputView.wrongInputRound();
+            }
         }
     }
     //3-3. (과목별) 시험 회차 점수 수정 메뉴 진입
