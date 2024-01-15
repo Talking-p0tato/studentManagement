@@ -123,7 +123,7 @@ public class MemoryRepository {
     
     // 학생 등급 조회
     public List<Score> findGradeByIdAndName(int studentId, String subjectName) {
-        List<Score> gradeList = this.scoreList;
+        List<Score> gradeList = new ArrayList<>();
         for (Score score : scoreList) {
             if (score.getStudent().getStudentId() == studentId && score.getSubject().getSubjectName().equals(subjectName)) {
                 gradeList.add(score);

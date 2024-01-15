@@ -341,11 +341,25 @@ public class StudentManagement {
 
     //3-2. (과목별) 회차별 등급 조회
     public void showSubjectRoundGrade(int studentId) {
-        OutputView.showQuerySubjectRoundGradeScreenInput();
-        int input = InputView.getUserIntInputNoMessage();
+        OutputView.showQuerySubjectRoundGradeScreenInput(repository.findStudentById(studentId).getSubjectList());
+        int input = 0;
+        while(true) {
+            input = InputView.getUserIntInputNoMessage();
+            if(repository.hasSubject(studentId,input)) {
+                break;
+            }
+            OutputView.printNotSubjectOfStudent();
+        }
+
         String subjectName = repository.findSubjectNameById(input);
         List<Score> scoreList = repository.findGradeByIdAndName(studentId, subjectName);
-        OutputView.printRoundScore(scoreList);
+        if(scoreList.isEmpty()) {
+            OutputView.printNoScoreRecord();
+            OutputView.delayChangeScreen();
+            selectStudentManageInfo(studentId);
+        } else {
+            OutputView.printRoundScore(scoreList);
+        }
         while (true) {
             int backinput = InputView.getUserIntInputNoMessage();
             if (backinput == 0) {
