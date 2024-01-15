@@ -350,5 +350,4 @@ public class StudentManagement {
     private boolean isValidScore(int score) {
         return score >= 0 && score <= 100;
     }
-
 }
