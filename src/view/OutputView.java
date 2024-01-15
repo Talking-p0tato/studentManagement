@@ -115,17 +115,6 @@ public class OutputView {
         System.out.print("->");
     }
 
-    public static void showAddRoundScreen(){
-        System.out.println("회차를 입력해주세요.");
-        System.out.println("회차는 1회차부터 10회차 까지 있습니다");
-        System.out.print("->");
-    }
-
-    public static void showAddScoreScreen(){
-        System.out.println("점수를 입력해주세요.");
-        System.out.println("점수는 1점부터 100점까지가 기준입니다.");
-        System.out.println("->");
-    }
     public static void showWrongAddContext(){
         System.out.println("잘못된 입력입니다. 다시입력해주세요.");
     }
