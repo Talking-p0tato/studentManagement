@@ -288,7 +288,7 @@ public class StudentManagement {
         while(true) {
             int subjectId = InputView.getUserIntInput();
             //0 입력 시 3.메뉴화면으로 이동
-            if (subjectId == 0) {
+            if (subjectId ==  0) {
                 selectStudentManageInfo(student.getStudentId());
                 break;
             }

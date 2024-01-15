@@ -201,7 +201,6 @@ public class OutputView {
             System.out.printf("%d. %d회차 : %d" + "\n", i + 1, studentScore.getRound(), studentScore.getScore());
         }
         System.out.println("0. 돌아가기");
-        System.out.println("-> ");
     }
     // 박하은
     public static void promptForScoreUpdate() {
