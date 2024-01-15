@@ -235,9 +235,6 @@ public class OutputView {
         System.out.println("다시 입력해주세요.");
     }
 
-    public void Test2() {
-        System.out.println("test2");
-    }
 }
 
 

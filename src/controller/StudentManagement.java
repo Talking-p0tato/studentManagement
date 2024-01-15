@@ -350,7 +350,5 @@ public class StudentManagement {
     private boolean isValidScore(int score) {
         return score >= 0 && score <= 100;
     }
-    public void Test1(){
-        System.out.println("git commit Test1");
-    }
+
 }
