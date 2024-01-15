@@ -204,7 +204,7 @@ public class OutputView {
         }
         System.out.println("0. 돌아가기");
     }
-    // 박하은
+    // 박하은.
     public static void promptForScoreUpdate() {
         System.out.println("점수를 수정해주세요.");
         System.out.println("-> ");
