@@ -133,19 +133,6 @@ public class MemoryRepository {
     }
     //
 
-    //점수가 범위 안인지 유효성 검사
-    public boolean validateAndParseScore(int inputScore) {
-        if (isValidScore(inputScore)) {
-            return true;
-        } else return false;
-
-
-    }
-
-    private boolean isValidScore(int score) {
-        return score >= 1 && score <= 100;
-
-    }
 
     // true면 학생이 과목이 신청한 적이 있으니 진행
     // false면 잘못된 입력이니까 다시 시도
