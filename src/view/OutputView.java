@@ -300,7 +300,7 @@ public class OutputView {
     public static void printRoundScore(List<Score> scoreList) {
         System.out.printf("|]----%s 회차별 등급 조회----[|\n",scoreList.get(0).getSubject().getSubjectName());
         for (Score score : scoreList) {
-            System.out.printf("회차 : %3d, 등급 : %s\n", score.getRound(), score.getGrade());
+            System.out.printf("회차 : %d, 등급 : %s\n", score.getRound(), score.getGrade());
         }
         System.out.println("0. 돌아가기");
         System.out.print("->");
