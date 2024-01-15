@@ -226,10 +226,12 @@ public class OutputView {
         System.out.println("메인 화면으로 돌아갑니다.");
     }
 
+    // 잘못된 수강생 id입력시 예외처리 Output
     public static void wrongInputStudentId() {
         System.out.println("등록된 수강생이 없습니다. 다시 입력해주세요.");
     }
 
+    //잘못 된 회차 입력시 예외처리 Output
     public static void wrongInputRound() {
         System.out.println("잘못된 회차 입력입니다. 회차는 1회차부터 10회차까지 있습니다.");
         System.out.println("다시 입력해주세요.");
