@@ -173,7 +173,6 @@ public class OutputView {
         //과목 이름 or 과목 고유번호 입력
     }
 
-
     public static void showStudentSubjectList(String studentName, List<Subject> subjectList) {
         //수강 과목 선택 화면
         System.out.println("|]=======[ Spring Track 수강생 점수 수정 ]=======[|");
@@ -287,11 +286,32 @@ public class OutputView {
         System.out.println("3초 뒤 메인 화면으로 돌아갑니다.");
     }
 
+    //4-2 (과목별) 시험 회차별 등급 조회 입력 받는 출력문
+    public static void showQuerySubjectRoundGradeScreenInput(List<Subject> subjectList) {
+        System.out.println("|]----수강생 과목 회차별 등급 조회----[|" + "\n");
+        for (Subject subject : subjectList) {
+            System.out.printf("%d. %s\n",subject.getSubjectId(),subject.getSubjectName());
+        }
+        System.out.println("조회할 과목을 입력해주세요.");
+        System.out.print("-> ");
+        //과목 이름 or 과목 고유번호 입력
+    }
+
     public static void printRoundScore(List<Score> scoreList) {
+        System.out.printf("|]----%s 회차별 등급 조회----[|\n",scoreList.get(0).getSubject().getSubjectName());
         for (Score score : scoreList) {
-            System.out.printf("회차 : &d, 등급 : %s\n", score.getRound(), score.getGrade());
+            System.out.printf("회차 : %3d, 등급 : %s\n", score.getRound(), score.getGrade());
         }
         System.out.println("0. 돌아가기");
+        System.out.print("->");
+    }
+
+    public static void printNoScoreRecord() {
+        System.out.println("해당 과목에 등록된 점수가 없습니다.");
+    }
+
+    public static void printNotSubjectOfStudent() {
+        System.out.println("해당 수강생이 신청한 과목의 번호가 아닙니다. 다시 입력해 주세요.");
     }
 
     // 잘못된 수강생 ID 입력시 예외처리 Output

@@ -318,7 +318,7 @@ public class StudentManagement {
                     //유저에게 점수 입력받기
                     int inputScore = InputView.getScoreByUser();
                     //점수 검증절차 넣어야함.(if else로 점수 검증 절차 수정)
-                    if(isValidScore(inputScore)) {
+                    if (isValidScore(inputScore)) {
                         Student student = repository.findStudentById(studentId);
                         Subject subject = repository.findSubjectById(inputSubjectId);
                         repository.addTestScore(student, subject, inputRound, inputScore);
@@ -326,7 +326,7 @@ public class StudentManagement {
                         OutputView.delayChangeScreen();
                         selectStudentManageInfo(studentId);
                         break;
-                    }else {
+                    } else {
                         OutputView.showWrongAddContext();
                     }
 
@@ -342,12 +342,27 @@ public class StudentManagement {
 
     //3-2. (과목별) 회차별 등급 조회
     public void showSubjectRoundGrade(int studentId) {
+        OutputView.showQuerySubjectRoundGradeScreenInput(repository.findStudentById(studentId).getSubjectList());
+        int input = 0;
+        while(true) {
+            input = InputView.getUserIntInputNoMessage();
+            if(repository.hasSubject(studentId,input)) {
+                break;
+            }
+            OutputView.printNotSubjectOfStudent();
+        }
         OutputView.showQuerySubjectRoundGradeScreenInput();
         OutputView.printAllSubjectOfStudent(repository.findStudentById(studentId).getSubjectList());
-        int input = InputView.getUserIntInputNoMessage();
-        String subjectName = repository.findSubjectNameById(input);
+        int numinput = InputView.getUserIntInputNoMessage();
+        String subjectName = repository.findSubjectNameById(numinput);
         List<Score> scoreList = repository.findGradeByIdAndName(studentId, subjectName);
-        OutputView.printRoundScore(scoreList);
+        if(scoreList.isEmpty()) {
+            OutputView.printNoScoreRecord();
+            OutputView.delayChangeScreen();
+            selectStudentManageInfo(studentId);
+        } else {
+            OutputView.printRoundScore(scoreList);
+        }
         while (true) {
             int backinput = InputView.getUserIntInputNoMessage();
             if (backinput == 0) {
