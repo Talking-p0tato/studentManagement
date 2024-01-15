@@ -131,16 +131,8 @@ public class MemoryRepository {
         }
         return gradeList;
     }
+
     //
-
-    //점수가 범위 안인지 유효성 검사
-    public boolean validateAndParseScore(int inputScore) {
-        if (isValidScore(inputScore)) {
-            return true;
-        } else return false;
-
-
-    }
 
     private boolean isValidScore(int score) {
         return score >= 1 && score <= 100;

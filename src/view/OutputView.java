@@ -170,8 +170,6 @@ public class OutputView {
 
     public static void showQuerySubjectRoundGradeScreenInput() {
         System.out.println("|]----수강생 과목 회차별 등급 조회----[|" + "\n");
-        System.out.println("조회할 과목을 입력해주세요.");
-        System.out.println("-> ");
         //과목 이름 or 과목 고유번호 입력
     }
 
