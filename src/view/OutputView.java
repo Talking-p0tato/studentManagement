@@ -111,10 +111,6 @@ public class OutputView {
         System.out.println("|]----수강생 과목별 시험 회차 및 점수 등록----[|");
     }
 
-    public static void showAddSubjectNameScreen(){
-        System.out.println("과목 이름을 입력해주세요.");
-        System.out.print("->");
-    }
 
     public static void printAllSubjectOfStudent(List<Subject> subjectList) {
         for (Subject subject : subjectList) {
@@ -124,46 +120,13 @@ public class OutputView {
         System.out.print("->");
     }
 
-    public static void showAddRoundScreen(){
-        System.out.println("회차를 입력해주세요.");
-        System.out.println("회차는 1회차부터 10회차 까지 있습니다");
-        System.out.print("->");
-    }
-
-    public static void showAddScoreScreen(){
-        System.out.println("점수를 입력해주세요.");
-        System.out.println("점수는 1점부터 100점까지가 기준입니다.");
-        System.out.println("->");
-    }
     public static void showWrongAddContext(){
         System.out.println("잘못된 입력입니다. 다시입력해주세요.");
     }
 
-    public static void showConfirmAddStudentScore(){
-        System.out.println("정상적으로 등록 되었습니다!");
-    }
 
 
     //4-1 (과목별) 시험 회차 및 점수 등록 입력 받는 출력문
-
-    public void showAddSubjectRoundScoreScreen() {
-        System.out.println("|]----수강생 과목별 시험 회차 및 점수 등록----[|" + "\n");
-        System.out.println("점수 정보를 (,)로 구분해서 입력해 주세요.");
-        System.out.println("점수 정보(과목 고유 번호, 수강생 고유 번호, 회차, 점수)");
-        System.out.println("-> ");
-        //과목 고유번호, 수강생 고유번호, 회차, 점수 인풋 받기
-        //
-    }
-    //4-2 (과목별) 시험 회차별 등급 조회 입력 받는 출력문
-
-    public void showQuerySubjectRoundGradeScreenInput() {
-        System.out.println("|]----수강생 과목 회차별 등급 조회----[|" + "\n");
-        System.out.println("조회할 과목을 입력해주세요.");
-        System.out.println("-> ");
-        //과목 이름 or 과목 고유번호 입력
-
-    }
-
 
     public static void showStudentSubjectList(String studentName, List<Subject> subjectList) {
         //수강 과목 선택 화면
@@ -260,5 +223,6 @@ public class OutputView {
         System.out.println("메인 화면으로 돌아갑니다.");
     }
 }
+
 
 
