@@ -7,8 +7,7 @@ import model.Subject;
 import view.InputView;
 import view.OutputView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class StudentManagement {
@@ -29,7 +28,7 @@ public class StudentManagement {
             int input = InputView.getUserIntInput();
             switch (input) {
                 case 1:
-                    addStudent();
+                    addStudent(); //수강생 등록 메뉴 출력
                 case 2:
                     showSearchStudentMenu(); //수강생 조회 메뉴 출력
                 case 3:
@@ -62,9 +61,9 @@ public class StudentManagement {
     public void showAllStudent() {
         OutputView.printAllStudent(repository.findAllStudent());
         int input = InputView.getUserIntInput();
-        while(true) {
+        while (true) {
             switch (input) {
-                case 0 :
+                case 0:
                     showMainMenu(); // 메인 메뉴로 돌아가기
                     break;
                 default:
@@ -76,20 +75,25 @@ public class StudentManagement {
     // 수강생 추가 메서드
     public void addStudent() {
         // 수강생 이름 입력
+        System.out.println();
         OutputView.addMemberScreen();
-        String name = InputView.getUserStringInput();
+        String name = InputView.getUserStringInputNoMessageNext();
         OutputView.addNameComplete();
+        System.out.println();
 
         // 수강생이 수강할 과목 입력
         List<Subject> subjectList = new ArrayList<>();
         chooseRequired(subjectList);
+        System.out.println();
         chooseOptional(subjectList);
+        System.out.println();
 
         // 데이터베이스에 저장
         Student savedStudent = repository.addMember(name, subjectList);
 
         // 수강생 등록 완료
         completeAddStudent(savedStudent, subjectList);
+        System.out.println();
         backToMain();
     }
 
@@ -98,85 +102,112 @@ public class StudentManagement {
         OutputView.completeAddStudentScreen();
         System.out.println("수강생 번호 : " + student.getStudentId());
         System.out.println("수강생 이름 : " + student.getStudentName());
-        System.out.println("필수 과목 : " + subjectList.subList(0, 3));
-        System.out.println("선택 과목 : " + subjectList.subList(3, 5));
+        System.out.println("필수 과목 : " + subjectList.get(0).getSubjectName() + ", " + subjectList.get(1).getSubjectName() + ", " + subjectList.get(2).getSubjectName());
+        System.out.println("선택 과목 : " + subjectList.get(3).getSubjectName() + ", " + subjectList.get(4).getSubjectName());
     }
 
     // 추가 : 필수과목
     private void chooseRequired(List<Subject> subjectList) {
         OutputView.requiredScreen();
-        String requiredSubject = InputView.getUserStringInput();
+        Set<Integer> selectedSubjects = new HashSet<>();
+        String requiredSubject = InputView.getUserStringInputNoMessageNextline().replaceAll(" ", "");
+
         if (isValidSelectionR(requiredSubject)) {
+            selectedSubjects.clear();
             if (requiredSubject.split(",").length != 3) {
                 OutputView.wrongInputRequiredSubject();
-                OutputView.requiredScreen();
-                requiredSubject = InputView.getUserStringInput();
+                chooseRequired(subjectList);
 
             } else if (requiredSubject.split(",").length == 3) {
                 String[] subjectArray = requiredSubject.split(",");
                 int[] subjectArrayNum = new int[subjectArray.length];
+
                 for (int i = 0; i < subjectArray.length; i++) {
                     subjectArrayNum[i] = Integer.parseInt(subjectArray[i]);
-                    subjectList.add(repository.findAllSubject().get(subjectArrayNum[i]));
-                    OutputView.addSubjectComplete();
+                    selectedSubjects.add(subjectArrayNum[i]);
+                }
+                if (selectedSubjects.size() != subjectArrayNum.length) {
+                    OutputView.wrongInputSubject();
+                    System.out.println();
+                    chooseRequired(subjectList);
+                } else {
+                    for (int i = 0; i < subjectArray.length; i++) {
+                        subjectList.add(repository.findAllSubject().get(subjectArrayNum[i] - 1));
+                    }
                 }
             } else {
                 wrongInput();
+                chooseRequired(subjectList);
             }
         } else {
             wrongInput();
             chooseRequired(subjectList);
         }
+        OutputView.addSubjectComplete();
     }
 
     // 추가 : 선택과목
     private void chooseOptional(List<Subject> subjectList) {
         OutputView.optionalScreen();
-        String optionalSubject = InputView.getUserStringInput();
+        Set<Integer> selectedSubjects = new HashSet<>();
+        String optionalSubject = InputView.getUserStringInputNoMessageNextline().replaceAll(" ", "");
+
         if (isValidSelectionO(optionalSubject)) {
+            selectedSubjects.clear();
             if (optionalSubject.split(",").length != 2) {
                 OutputView.wrongInputOptionalSubject();
-                OutputView.requiredScreen();
+                chooseOptional(subjectList);
 
             } else if (optionalSubject.split(",").length == 2) {
                 String[] subjectArray = optionalSubject.split(",");
                 int[] subjectArrayNum = new int[subjectArray.length];
+
                 for (int i = 0; i < subjectArray.length; i++) {
                     subjectArrayNum[i] = Integer.parseInt(subjectArray[i]);
-                    subjectList.add(repository.findAllSubject().get(subjectArrayNum[i] + 5));
-                    OutputView.addSubjectComplete();
+                    selectedSubjects.add(subjectArrayNum[i]);
+                }
+                if (selectedSubjects.size() != subjectArrayNum.length) {
+                    OutputView.wrongInputSubject();
+                    System.out.println();
+                    chooseOptional(subjectList);
+                } else {
+                    for (int i = 0; i < subjectArray.length; i++) {
+                        subjectList.add(repository.findAllSubject().get(subjectArrayNum[i] + 4));
+                    }
                 }
             } else {
                 wrongInput();
+                chooseOptional(subjectList);
             }
+
         } else {
             wrongInput();
             chooseOptional(subjectList);
         }
+        OutputView.addSubjectComplete();
     }
 
     // 추가 : 잘못된 입력
     private void wrongInput() {
         OutputView.wrongInputScreen();
-        addStudent();
     }
 
     // 추가 : 필수 Subject 검증
     private boolean isValidSelectionR(String input) {
-        return input.matches("[1-5]+");
+        return input.matches("[1-5,]+");
     }
 
     // 추가 :선택 Subject 검증
     private boolean isValidSelectionO(String input) {
-        return input.matches("[1-4]+");
+        return input.matches("[1-4,]+");
     }
 
     // 추가 : 메인으로 이동
-    public void backToMain() {
+    private void backToMain() {
         OutputView.backToMainScreen();
         try {
             Thread.sleep(3000);
-            /* 메인으로 돌아가는 메서드 */
+            showMainMenu();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -229,34 +260,30 @@ public class StudentManagement {
             if (repository.hasSubject(studentId, inputSubjectId)) {
                 break;
             } else {
-                //일단 넣어놓음 변경해야함 (수정함)
-                OutputView.wrongInputStudentId();
+                //일단 넣어놓음 변경해야함
+                OutputView.incorrectMenu();
             }
         }
         while (true) {
             inputRound = InputView.getRoundByUser();
-            if(isValidRound(inputRound)) {
+            if (isValidRound(inputRound)) {
                 if (!repository.isScoreRecordExist(studentId, inputSubjectId, inputRound)) {
                     //유저에게 점수 입력받기
                     int inputScore = InputView.getScoreByUser();
-                    //점수 검증절차 넣어야함.(if else로 점수 검증 절차 수정)
-                    if(isValidScore(inputScore)) {
-                        Student student = repository.findStudentById(studentId);
-                        Subject subject = repository.findSubjectById(inputSubjectId);
-                        repository.addTestScore(student, subject, inputRound, inputScore);
-                        OutputView.completeSetScore();
-                        OutputView.delayChangeScreen();
-                        selectStudentManageInfo(studentId);
-                        break;
-                    }else {
-                        OutputView.showWrongAddContext();
-                    }
+                    //점수 검증절차 넣어야함.
+                    Student student = repository.findStudentById(studentId);
+                    Subject subject = repository.findSubjectById(inputSubjectId);
+                    repository.addTestScore(student, subject, inputRound, inputScore);
+                    OutputView.completeSetScore();
+                    OutputView.delayChangeScreen();
+                    selectStudentManageInfo(studentId);
+                    break;
                 } else {
                     OutputView.duplicateRound();
                 }
             } else {
                 //수정해야함.
-                OutputView.wrongInputRound();
+                OutputView.incorrectMenu();
             }
         }
     }
@@ -268,9 +295,9 @@ public class StudentManagement {
         String subjectName = repository.findSubjectNameById(input);
         List<Score> scoreList = repository.findGradeByIdAndName(studentId, subjectName);
         OutputView.printRoundScore(scoreList);
-        while(true) {
+        while (true) {
             int backinput = InputView.getUserIntInputNoMessage();
-            if(backinput==0) {
+            if (backinput == 0) {
                 selectStudentManageInfo(studentId);
                 break;
             } else {
@@ -285,7 +312,7 @@ public class StudentManagement {
         // 과목 목록 출력
         OutputView.showStudentSubjectList(student.getStudentName(), student.getSubjectList());
 
-        while(true) {
+        while (true) {
             int subjectId = InputView.getUserIntInput();
             //0 입력 시 3.메뉴화면으로 이동
             if (subjectId ==  0) {
@@ -293,7 +320,7 @@ public class StudentManagement {
                 break;
             }
             //입력받은 과목이 학생이 신청한 과목인지 검증
-            else if(repository.hasSubject(student.getStudentId(), subjectId)) {
+            else if (repository.hasSubject(student.getStudentId(), subjectId)) {
                 //해당 과목에 등록된 회차별 점수출력 화면
                 showRoundAndScore(subjectId, student.getStudentId());
                 break;
