@@ -315,52 +315,50 @@ public class StudentManagement {
 
         // 회차 선택
         int roundNumber;
-        do {
-            System.out.println("수정할 회차 번호를 입력하세요 (1-10): ");
+        while (true) {
             roundNumber = InputView.getUserIntInput();
-            if (!isValidRound(roundNumber)) {
-                OutputView.showError("회차 번호는 1에서 10 사이여야 합니다.");
-                roundNumber = -1;
+
+            if (roundNumber == 0) {
+                selectStudentManageInfo(studentId); // 이전 메뉴로 돌아가기
+                return; // 함수 종료
             }
-        } while (roundNumber == -1);
 
-        // 점수 수정 안내 메시지 출력
-        OutputView.promptForScoreUpdate();
+            if (isValidRound(roundNumber)) {
+                int finalRoundNumber = roundNumber;
+                Score scoreToUpdate = scores.stream()
+                        .filter(score -> score.getRound() == finalRoundNumber)
+                        .findFirst()
+                        .orElse(null);
 
-        // 회차에 해당하는 점수 객체 찾기
-        int finalRoundNumber = roundNumber;
-        Score scoreToUpdate = scores.stream()
-                .filter(score -> score.getRound() == finalRoundNumber)
-                .findFirst()
-                .orElse(null);
+                if (scoreToUpdate == null) {
+                    OutputView.showError("선택한 회차가 목록에 없습니다. 다시 입력하거나 0을 입력하여 이전 메뉴로 돌아갑니다.");
+                    continue; // 새로운 회차 번호로 다시 시도
+                }
 
-        if (scoreToUpdate == null) {
-            OutputView.showError("선택한 회차가 목록에 없습니다.");
-            return;
+                // 새로운 점수 입력
+                OutputView.promptForScoreUpdate();
+                int newScore;
+                do {
+                    newScore = InputView.getUserIntInput();
+                    if (!isValidScore(newScore)) {
+                        OutputView.showError("점수는 0에서 100 사이여야 합니다.");
+                        newScore = -1;
+                    }
+                } while (newScore == -1);
+
+                // 점수 업데이트
+                scoreToUpdate.setScore(newScore);
+                scoreToUpdate.setGrade();
+                repository.updateTestScore(studentId, subjectId, roundNumber, newScore);
+                OutputView.showConfirmUpdateStudentScore();
+                break; // 회차 선택 및 점수 업데이트 완료
+            } else {
+                OutputView.showError("회차 번호는 1에서 10 사이여야 합니다.");
+            }
         }
 
-        // 새로운 점수 입력
-        int newScore;
-        do {
-            newScore = InputView.getUserIntInput();
-            if (!isValidScore(newScore)) {
-                OutputView.showError("점수는 0에서 100 사이여야 합니다.");
-                newScore = -1;
-            }
-        } while (newScore == -1);
-
-        // 점수 업데이트
-        scoreToUpdate.setScore(newScore);
-        scoreToUpdate.setGrade();
-
-        // 변경 사항을 저장소에 반영
-        repository.updateTestScore(studentId, subjectId, roundNumber, newScore);
-
-        // 업데이트 확인 메시지 출력
-        OutputView.showConfirmUpdateStudentScore();
-
-        // 점수 수정 후 점수 관리로 돌아감.
-        OutputView.showStudentScoreManageInfo();
+        // 점수 수정 후 점수 관리로 돌아감
+        selectStudentManageInfo(studentId);
     }
 
     private boolean isValidRound(int round) {

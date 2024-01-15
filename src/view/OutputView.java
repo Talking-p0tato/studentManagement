@@ -177,6 +177,7 @@ public class OutputView {
             System.out.printf("%d. %s\n", subject.getSubjectId(), subject.getSubjectName());
         }
         System.out.println("0. 돌아가기");
+        System.out.println("-> ");
         //과목 이름 인풋을 받음
         //수강생이 수강한 과목이름이 아니거나 잘못된 입력 값이라면
         //잘못된 입력입니다 다시입력해주세요. 출력 후 ->(회차 선택 화면)
@@ -190,24 +191,28 @@ public class OutputView {
     }
 
 
+    // 박하은
     public static void showUpdateStudentRoundGrade(String subjectName, List<Score> scoreList) {
         // 수정 회차 선택화면
-        System.out.println("수정을 원하는 회차를 입력 해주세요.");
+        System.out.println("수정할 회차 번호를 입력하세요 (0: 이전 메뉴로, 1-10: 회차 선택) ");
         System.out.println("과목명 : " + subjectName);
         for (int i = 0; i < scoreList.size(); i++) {
             Score studentScore = scoreList.get(i);
             System.out.printf("%d. %d회차 : %d" + "\n", i + 1, studentScore.getRound(), studentScore.getScore());
         }
         System.out.println("0. 돌아가기");
+        System.out.println("-> ");
     }
-
+    // 박하은
     public static void promptForScoreUpdate() {
         System.out.println("점수를 수정해주세요.");
+        System.out.println("-> ");
     }
-
+    // 박하은
     public static void showConfirmUpdateStudentScore() {
         System.out.println("수정되었습니다!");
     }
+
     // 수강생 등록 화면 . 1
 
     // 수강생 이름 입력 완료
