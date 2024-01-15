@@ -351,10 +351,7 @@ public class StudentManagement {
             }
             OutputView.printNotSubjectOfStudent();
         }
-        OutputView.showQuerySubjectRoundGradeScreenInput();
-        OutputView.printAllSubjectOfStudent(repository.findStudentById(studentId).getSubjectList());
-        int numinput = InputView.getUserIntInputNoMessage();
-        String subjectName = repository.findSubjectNameById(numinput);
+        String subjectName = repository.findSubjectNameById(input);
         List<Score> scoreList = repository.findGradeByIdAndName(studentId, subjectName);
         if(scoreList.isEmpty()) {
             OutputView.printNoScoreRecord();
