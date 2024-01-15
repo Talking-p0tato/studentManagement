@@ -158,10 +158,5 @@ public class MemoryRepository {
             }
         }
         return false;
-    //학생 등록
-    public void addMember(String name, List<Subject> subjectList) {
-        memberIdx++;
-        Student student = new Student(memberIdx, name, subjectList);
-        studentList.add(student);
     }
 }
