@@ -28,7 +28,7 @@ public class StudentManagement {
             int input = InputView.getUserIntInput();
             switch (input) {
                 case 1:
-                    addStudent(); //수강생 등록 메뉴 출력
+                    addStudent();
                 case 2:
                     showSearchStudentMenu(); //수강생 조회 메뉴 출력
                 case 3:
@@ -48,6 +48,10 @@ public class StudentManagement {
                 case 1:
                     showAllStudent(); //전체학생 조회 화면
                     break;
+                case 2:
+                    showAllStudentByName(); //수강생이름으로 조회
+                case 3:
+                    showAllStudentByID(); //수강생고유번호로 조회
                 case 0:
                     showMainMenu(); //메인 메뉴화면으로 돌아가기
                     break;
@@ -60,11 +64,54 @@ public class StudentManagement {
     //2-1. 전체학생 조회 화면
     public void showAllStudent() {
         OutputView.printAllStudent(repository.findAllStudent());
-        int input = InputView.getUserIntInput();
         while (true) {
+            int input = InputView.getUserIntInput();
             switch (input) {
                 case 0:
                     showMainMenu(); // 메인 메뉴로 돌아가기
+                    break;
+                case 1:
+                    showSearchStudentMenu(); //수강생 조회 메뉴로 돌아가기
+                    break;
+                default:
+                    OutputView.wrongInputScreen(); //잘못된 입력
+            }
+        }
+    }
+
+    //2-2. 수강생이름으로 조회 화면
+    public void showAllStudentByName() {
+        while (true) {
+            OutputView.enterName();
+            String name = InputView.getUserStringInput();
+            OutputView.printAllStudentByName(repository.findAllStudent(), name);
+            int input = InputView.getUserIntInput();
+            switch (input) {
+                case 0:
+                    showMainMenu(); // 메인 메뉴로 돌아가기
+                    break;
+                case 1:
+                    showSearchStudentMenu(); //수강생 조회 메뉴로 돌아가기
+                    break;
+                default:
+                    OutputView.wrongInputScreen(); //잘못된 입력
+            }
+        }
+    }
+
+    //2-3. 수강생ID로 조회 화면
+    public void showAllStudentByID() {
+        while (true) {
+            OutputView.enterID();
+            int ID = InputView.getUserIntInput();
+            OutputView.printAllStudentByID(repository.findAllStudent(), ID);
+            int input = InputView.getUserIntInput();
+            switch (input) {
+                case 0:
+                    showMainMenu(); // 메인 메뉴로 돌아가기
+                    break;
+                case 1:
+                    showSearchStudentMenu(); //수강생 조회 메뉴로 돌아가기
                     break;
                 default:
                     OutputView.wrongInputScreen(); //잘못된 입력
@@ -271,7 +318,7 @@ public class StudentManagement {
                     //유저에게 점수 입력받기
                     int inputScore = InputView.getScoreByUser();
                     //점수 검증절차 넣어야함.(if else로 점수 검증 절차 수정)
-                    if(isValidScore(inputScore)) {
+                    if (isValidScore(inputScore)) {
                         Student student = repository.findStudentById(studentId);
                         Subject subject = repository.findSubjectById(inputSubjectId);
                         repository.addTestScore(student, subject, inputRound, inputScore);
@@ -279,7 +326,7 @@ public class StudentManagement {
                         OutputView.delayChangeScreen();
                         selectStudentManageInfo(studentId);
                         break;
-                    }else {
+                    } else {
                         OutputView.showWrongAddContext();
                     }
                 } else {
@@ -319,7 +366,7 @@ public class StudentManagement {
         while (true) {
             int subjectId = InputView.getUserIntInput();
             //0 입력 시 3.메뉴화면으로 이동
-            if (subjectId ==  0) {
+            if (subjectId == 0) {
                 selectStudentManageInfo(student.getStudentId());
                 break;
             }
