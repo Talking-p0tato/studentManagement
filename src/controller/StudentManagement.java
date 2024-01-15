@@ -28,7 +28,7 @@ public class StudentManagement {
             int input = InputView.getUserIntInput();
             switch (input) {
                 case 1:
-                    addStudent();
+                    addStudent(); //수강생 등록 메뉴 출력
                 case 2:
                     showSearchStudentMenu(); //수강생 조회 메뉴 출력
                 case 3:
@@ -318,7 +318,7 @@ public class StudentManagement {
                     //유저에게 점수 입력받기
                     int inputScore = InputView.getScoreByUser();
                     //점수 검증절차 넣어야함.(if else로 점수 검증 절차 수정)
-                    if (isValidScore(inputScore)) {
+                    if(isValidScore(inputScore)) {
                         Student student = repository.findStudentById(studentId);
                         Subject subject = repository.findSubjectById(inputSubjectId);
                         repository.addTestScore(student, subject, inputRound, inputScore);
@@ -326,9 +326,10 @@ public class StudentManagement {
                         OutputView.delayChangeScreen();
                         selectStudentManageInfo(studentId);
                         break;
-                    } else {
+                    }else {
                         OutputView.showWrongAddContext();
                     }
+
                 } else {
                     OutputView.duplicateRound();
                 }
@@ -342,6 +343,7 @@ public class StudentManagement {
     //3-2. (과목별) 회차별 등급 조회
     public void showSubjectRoundGrade(int studentId) {
         OutputView.showQuerySubjectRoundGradeScreenInput();
+        OutputView.printAllSubjectOfStudent(repository.findStudentById(studentId).getSubjectList());
         int input = InputView.getUserIntInputNoMessage();
         String subjectName = repository.findSubjectNameById(input);
         List<Score> scoreList = repository.findGradeByIdAndName(studentId, subjectName);
@@ -366,7 +368,7 @@ public class StudentManagement {
         while (true) {
             int subjectId = InputView.getUserIntInput();
             //0 입력 시 3.메뉴화면으로 이동
-            if (subjectId == 0) {
+            if (subjectId ==  0) {
                 selectStudentManageInfo(student.getStudentId());
                 break;
             }
@@ -391,7 +393,7 @@ public class StudentManagement {
         // 회차 및 점수 출력
         OutputView.showUpdateStudentRoundGrade(repository.findSubjectNameById(subjectId), scores);
 
-        // 회차 선택.cl
+        // 회차 선택.
         int roundNumber;
         while (true) {
             roundNumber = InputView.getUserIntInput();

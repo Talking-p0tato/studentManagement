@@ -18,6 +18,7 @@ public class OutputView {
         System.out.println("3. 수강생 점수 관리");
         System.out.println();
     }
+
     public static void addMemberScreen() {
         System.out.println("|]=======[ Spring Track 수강생 등록 ]=======[|");
         System.out.print("등록하시려는 수강생 이름을 입력해주세요. : ");
@@ -34,6 +35,7 @@ public class OutputView {
         }
         System.out.println();
     }
+
     public static void incorrectMenu() {
         System.out.println("잘못된 메뉴 선택입니다. 다시 입력해 주세요.");
     }
@@ -158,7 +160,9 @@ public class OutputView {
     }
 
 
-    public static void showWrongAddContext() {
+
+
+    public static void showWrongAddContext(){
         System.out.println("잘못된 입력입니다. 다시입력해주세요.");
     }
 
@@ -166,8 +170,6 @@ public class OutputView {
 
     public static void showQuerySubjectRoundGradeScreenInput() {
         System.out.println("|]----수강생 과목 회차별 등급 조회----[|" + "\n");
-        System.out.println("조회할 과목을 입력해주세요.");
-        System.out.println("-> ");
         //과목 이름 or 과목 고유번호 입력
     }
 
