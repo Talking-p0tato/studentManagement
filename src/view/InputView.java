@@ -15,11 +15,13 @@ public class InputView {
 
     public static int getRoundByUser() {
         System.out.println("등록할 회차를 입력해주세요.");
+        System.out.println("회차는 1회차부터 10회차 까지 있습니다");
         return scanner.nextInt();
     }
 
     public static int getScoreByUser() {
         System.out.println("등록할 점수를 입력해 주세요.");
+        System.out.println("점수는 1점부터 100점까지가 기준입니다.");
         return scanner.nextInt();
     }
 
