@@ -82,8 +82,8 @@ public class OutputView {
     public static void failShowStudentList() {
         System.out.println("1과 0 중에서 다시 선택해주세요.");
     }
-    //4. 수강생 점수관리 메인 화면 출력
 
+    //4. 수강생 점수관리 메인 화면 출력
     public static void showAddStudentIdScreen() {
         System.out.println("|]=======[ Spring Track 수강생 점수 관리 ]=======[|" + "\n");
         System.out.println("점수를 관리할 수강생 ID 를 입력해주세요.");
@@ -156,12 +156,11 @@ public class OutputView {
     }
     //4-2 (과목별) 시험 회차별 등급 조회 입력 받는 출력문
 
-    public void showQuerySubjectRoundGradeScreenInput() {
+    public static void showQuerySubjectRoundGradeScreenInput() {
         System.out.println("|]----수강생 과목 회차별 등급 조회----[|" + "\n");
         System.out.println("조회할 과목을 입력해주세요.");
         System.out.println("-> ");
         //과목 이름 or 과목 고유번호 입력
-
     }
 
 
@@ -258,6 +257,13 @@ public class OutputView {
 
     public static void backToMainScreen() {
         System.out.println("메인 화면으로 돌아갑니다.");
+    }
+
+    public static void printRoundScore(List<Score> scoreList) {
+        for (Score score : scoreList) {
+            System.out.printf("회차 : &d, 등급 : %s\n", score.getRound(),score.getGrade());
+        }
+        System.out.println("0. 돌아가기");
     }
 }
 
