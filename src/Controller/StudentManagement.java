@@ -28,7 +28,8 @@ public class StudentManagement {
         while (true) {
             int input = InputView.getUserIntInput();
             switch (input) {
-                case 1: //수강생 등록 메서드
+                case 1:
+                    addStudent();
                 case 2:
                     showSearchStudentMenu(); //수강생 조회 메뉴 출력
                 case 3:
@@ -207,7 +208,7 @@ public class StudentManagement {
                 showSetRoundScore(studentId); //3-1.(과목별) 시험 회차 및 점수 등록
                 break;
             case 2:
-                //과목별 회차 등급 조회 메서드
+                showSubjectRoundGrade(studentId); //3-2.(과목별) 회차별 등급 조회
                 break;
             case 3:
                 showAndSelectSubject(repository.findStudentById(studentId)); //3-2(과목별) 시험 회차 점수 수정
@@ -255,6 +256,25 @@ public class StudentManagement {
             }
         }
     }
+
+    //3-2. (과목별) 회차별 등급 조회
+    public void showSubjectRoundGrade(int studentId) {
+        OutputView.showQuerySubjectRoundGradeScreenInput();
+        int input = InputView.getUserIntInputNoMessage();
+        String subjectName = repository.findSubjectNameById(input);
+        List<Score> scoreList = repository.findGradeByIdAndName(studentId, subjectName);
+        OutputView.printRoundScore(scoreList);
+        while(true) {
+            int backinput = InputView.getUserIntInputNoMessage();
+            if(backinput==0) {
+                selectStudentManageInfo(studentId);
+                break;
+            } else {
+                OutputView.wrongInputScreen();
+            }
+        }
+    }
+
     //3-3. (과목별) 시험 회차 점수 수정 메뉴 진입
     public void showAndSelectSubject(Student student) {
         // 유효성 검사 메서드 필요함 hasSubject
