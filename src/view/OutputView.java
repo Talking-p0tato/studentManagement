@@ -222,7 +222,13 @@ public class OutputView {
     public static void backToMainScreen() {
         System.out.println("메인 화면으로 돌아갑니다.");
     }
+
+    public static void wrongInputStudentId() {
+        System.out.println("등록된 수강생이 없습니다. 다시입력해주세요.");
+    }
 }
+
+
 
 
 
