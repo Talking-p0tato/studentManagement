@@ -234,6 +234,10 @@ public class OutputView {
         System.out.println("잘못된 회차 입력입니다. 회차는 1회차부터 10회차까지 있습니다.");
         System.out.println("다시 입력해주세요.");
     }
+
+    public void Test2() {
+        System.out.println("test2");
+    }
 }
 
 
