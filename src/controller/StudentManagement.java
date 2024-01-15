@@ -261,7 +261,7 @@ public class StudentManagement {
     }
 
     //3-0. 수강생 점수 관리 진입 시 studentId 입력
-    public void processStudentManage() {
+        public void processStudentManage() {
         OutputView.showAddStudentIdScreen();
         int studentId = InputView.getUserIntInputNoMessage();
         //메뉴에 진입 시 학생 id를 입력받고 검증하는 절차
@@ -329,6 +329,7 @@ public class StudentManagement {
                     } else {
                         OutputView.showWrongAddContext();
                     }
+
                 } else {
                     OutputView.duplicateRound();
                 }
@@ -341,11 +342,27 @@ public class StudentManagement {
 
     //3-2. (과목별) 회차별 등급 조회
     public void showSubjectRoundGrade(int studentId) {
+        OutputView.showQuerySubjectRoundGradeScreenInput(repository.findStudentById(studentId).getSubjectList());
+        int input = 0;
+        while(true) {
+            input = InputView.getUserIntInputNoMessage();
+            if(repository.hasSubject(studentId,input)) {
+                break;
+            }
+            OutputView.printNotSubjectOfStudent();
+        }
         OutputView.showQuerySubjectRoundGradeScreenInput();
-        int input = InputView.getUserIntInputNoMessage();
-        String subjectName = repository.findSubjectNameById(input);
+        OutputView.printAllSubjectOfStudent(repository.findStudentById(studentId).getSubjectList());
+        int numinput = InputView.getUserIntInputNoMessage();
+        String subjectName = repository.findSubjectNameById(numinput);
         List<Score> scoreList = repository.findGradeByIdAndName(studentId, subjectName);
-        OutputView.printRoundScore(scoreList);
+        if(scoreList.isEmpty()) {
+            OutputView.printNoScoreRecord();
+            OutputView.delayChangeScreen();
+            selectStudentManageInfo(studentId);
+        } else {
+            OutputView.printRoundScore(scoreList);
+        }
         while (true) {
             int backinput = InputView.getUserIntInputNoMessage();
             if (backinput == 0) {
