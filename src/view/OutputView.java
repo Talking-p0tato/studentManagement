@@ -6,6 +6,7 @@ import model.Subject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OutputView {
 
@@ -17,7 +18,6 @@ public class OutputView {
         System.out.println("3. 수강생 점수 관리");
         System.out.println();
     }
-
     public static void addMemberScreen() {
         System.out.println("|]=======[ Spring Track 수강생 등록 ]=======[|");
         System.out.print("등록하시려는 수강생 이름을 입력해주세요. : ");
@@ -34,7 +34,6 @@ public class OutputView {
         }
         System.out.println();
     }
-
     public static void incorrectMenu() {
         System.out.println("잘못된 메뉴 선택입니다. 다시 입력해 주세요.");
     }
@@ -51,20 +50,50 @@ public class OutputView {
     public static void showStudentList() {
         System.out.println("|]=======[ Spring Track 수강생 목록 조회 ]=======[|");
         System.out.println("1. 전체 수강생목록확인");
+        System.out.println("2. 이름으로 수강생확인");
+        System.out.println("3. ID로 수강생확인");
         System.out.println("0. 돌아가기");
     }
 
+    //2-1. 전체학생 조회 화면
     public static void printAllStudent(List<Student> studentList) {
-        if (studentList.isEmpty()) {
+        printStudent(studentList);
+    }
+
+    //2-2. 수강생이름으로 조회 화면
+    public static void printAllStudentByName(List<Student> studentList, String name) {
+        List<Student> namestudent = new ArrayList<>();
+        for (Student student : studentList) {
+            if (Objects.equals(student.getStudentName(), name)) {
+                namestudent.add(student);
+            }
+        }
+        printStudent(namestudent);
+    }
+
+    //2-3. 수강생ID로 조회 화면
+    public static void printAllStudentByID(List<Student> studentList, int ID) {
+        List<Student> idstudent = new ArrayList<>();
+        for (Student student : studentList) {
+            if (student.getStudentId() == ID) {
+                idstudent.add(student);
+            }
+        }
+        printStudent(idstudent);
+    }
+
+    //2-1, 2-2, 2-3 OutputView에 사용
+    public static void printStudent(List<Student> student) {
+        if (student.isEmpty()) {
             System.out.println("조회 할 수 있는 수강생이 없습니다.");
         } else {
-            System.out.println("등록된 수강생은 " + studentList.size() + "명 입니다.");
-            for (Student student : studentList) {
-                System.out.print("수강생ID : " + student.getStudentId() +
-                        "\n수강생이름 : " + student.getStudentName() + "\n");
+            System.out.println("등록된 수강생은 " + student.size() + "명 입니다.");
+            for (Student student1 : student) {
+                System.out.print("수강생ID : " + student1.getStudentId() +
+                        "\n수강생이름 : " + student1.getStudentName() + "\n");
                 List<String> requiredSubjectNameList = new ArrayList<>();
                 List<String> optionalSubjectNameList = new ArrayList<>();
-                for (Subject subject : student.getSubjectList()) {
+                for (Subject subject : student1.getSubjectList()) {
                     if (subject.getType().equals("필수")) {
                         requiredSubjectNameList.add(subject.getSubjectName());
                     } else if (subject.getType().equals("선택")) {
@@ -75,8 +104,19 @@ public class OutputView {
                 System.out.println("신청한 선택 과목 : " + optionalSubjectNameList.toString());
                 System.out.println();
             }
-            System.out.println("0. 뒤로가기");
         }
+        System.out.println("0. 메인 메뉴로 돌아가기");
+        System.out.println("1. 수강생 조회메뉴로 돌아가기");
+    }
+
+    //2-2. 수강생이름으로 조회 화면 이름 입력받기
+    public static void enterName() { //
+        System.out.println("찾으시는 학생 이름을 ");
+    }
+
+    //2-3. 수강생ID로 조회 화면 입력받기
+    public static void enterID() { //
+        System.out.println("찾으시는 학생 ID를 ");
     }
     //3. 수강생 목록 확인 화면 (오류시)
 
@@ -118,9 +158,7 @@ public class OutputView {
     }
 
 
-
-
-    public static void showWrongAddContext(){
+    public static void showWrongAddContext() {
         System.out.println("잘못된 입력입니다. 다시입력해주세요.");
     }
 
@@ -172,11 +210,13 @@ public class OutputView {
         }
         System.out.println("0. 돌아가기");
     }
+
     // 박하은.
     public static void promptForScoreUpdate() {
         System.out.println("점수를 수정해주세요.");
         System.out.println("-> ");
     }
+
     // 박하은
     public static void showConfirmUpdateStudentScore() {
         System.out.println("수정되었습니다!");
@@ -247,7 +287,7 @@ public class OutputView {
 
     public static void printRoundScore(List<Score> scoreList) {
         for (Score score : scoreList) {
-            System.out.printf("회차 : &d, 등급 : %s\n", score.getRound(),score.getGrade());
+            System.out.printf("회차 : &d, 등급 : %s\n", score.getRound(), score.getGrade());
         }
         System.out.println("0. 돌아가기");
     }
