@@ -260,8 +260,8 @@ public class StudentManagement {
             if (repository.hasSubject(studentId, inputSubjectId)) {
                 break;
             } else {
-                //일단 넣어놓음 변경해야함
-                OutputView.incorrectMenu();
+                //일단 넣어놓음 변경해야함 (수정함)
+                OutputView.wrongInputStudentId();
             }
         }
         while (true) {
@@ -270,20 +270,24 @@ public class StudentManagement {
                 if (!repository.isScoreRecordExist(studentId, inputSubjectId, inputRound)) {
                     //유저에게 점수 입력받기
                     int inputScore = InputView.getScoreByUser();
-                    //점수 검증절차 넣어야함.
-                    Student student = repository.findStudentById(studentId);
-                    Subject subject = repository.findSubjectById(inputSubjectId);
-                    repository.addTestScore(student, subject, inputRound, inputScore);
-                    OutputView.completeSetScore();
-                    OutputView.delayChangeScreen();
-                    selectStudentManageInfo(studentId);
-                    break;
+                    //점수 검증절차 넣어야함.(if else로 점수 검증 절차 수정)
+                    if(isValidScore(inputScore)) {
+                        Student student = repository.findStudentById(studentId);
+                        Subject subject = repository.findSubjectById(inputSubjectId);
+                        repository.addTestScore(student, subject, inputRound, inputScore);
+                        OutputView.completeSetScore();
+                        OutputView.delayChangeScreen();
+                        selectStudentManageInfo(studentId);
+                        break;
+                    }else {
+                        OutputView.showWrongAddContext();
+                    }
                 } else {
                     OutputView.duplicateRound();
                 }
             } else {
                 //수정해야함.
-                OutputView.incorrectMenu();
+                OutputView.wrongInputRound();
             }
         }
     }
