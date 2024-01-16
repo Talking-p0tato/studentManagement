@@ -123,7 +123,7 @@ public class MemoryRepository {
     
     // 학생 등급 조회
     public List<Score> findGradeByIdAndName(int studentId, String subjectName) {
-        List<Score> gradeList = this.scoreList;
+        List<Score> gradeList = new ArrayList<>();
         for (Score score : scoreList) {
             if (score.getStudent().getStudentId() == studentId && score.getSubject().getSubjectName().equals(subjectName)) {
                 gradeList.add(score);
@@ -131,8 +131,13 @@ public class MemoryRepository {
         }
         return gradeList;
     }
+
     //
 
+    private boolean isValidScore(int score) {
+        return score >= 1 && score <= 100;
+
+    }
 
     // true면 학생이 과목이 신청한 적이 있으니 진행
     // false면 잘못된 입력이니까 다시 시도
