@@ -6,6 +6,7 @@ import model.Subject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OutputView {
 
@@ -51,20 +52,50 @@ public class OutputView {
     public static void showStudentList() {
         System.out.println("|]=======[ Spring Track 수강생 목록 조회 ]=======[|");
         System.out.println("1. 전체 수강생목록확인");
+        System.out.println("2. 이름으로 수강생확인");
+        System.out.println("3. ID로 수강생확인");
         System.out.println("0. 돌아가기");
     }
 
+    //2-1. 전체학생 조회 화면
     public static void printAllStudent(List<Student> studentList) {
-        if (studentList.isEmpty()) {
+        printStudent(studentList);
+    }
+
+    //2-2. 수강생이름으로 조회 화면
+    public static void printAllStudentByName(List<Student> studentList, String name) {
+        List<Student> namestudent = new ArrayList<>();
+        for (Student student : studentList) {
+            if (Objects.equals(student.getStudentName(), name)) {
+                namestudent.add(student);
+            }
+        }
+        printStudent(namestudent);
+    }
+
+    //2-3. 수강생ID로 조회 화면
+    public static void printAllStudentByID(List<Student> studentList, int ID) {
+        List<Student> idstudent = new ArrayList<>();
+        for (Student student : studentList) {
+            if (student.getStudentId() == ID) {
+                idstudent.add(student);
+            }
+        }
+        printStudent(idstudent);
+    }
+
+    //2-1, 2-2, 2-3 OutputView에 사용
+    public static void printStudent(List<Student> student) {
+        if (student.isEmpty()) {
             System.out.println("조회 할 수 있는 수강생이 없습니다.");
         } else {
-            System.out.println("등록된 수강생은 " + studentList.size() + "명 입니다.");
-            for (Student student : studentList) {
-                System.out.print("수강생ID : " + student.getStudentId() +
-                        "\n수강생이름 : " + student.getStudentName() + "\n");
+            System.out.println("등록된 수강생은 " + student.size() + "명 입니다.");
+            for (Student student1 : student) {
+                System.out.print("수강생ID : " + student1.getStudentId() +
+                        "\n수강생이름 : " + student1.getStudentName() + "\n");
                 List<String> requiredSubjectNameList = new ArrayList<>();
                 List<String> optionalSubjectNameList = new ArrayList<>();
-                for (Subject subject : student.getSubjectList()) {
+                for (Subject subject : student1.getSubjectList()) {
                     if (subject.getType().equals("필수")) {
                         requiredSubjectNameList.add(subject.getSubjectName());
                     } else if (subject.getType().equals("선택")) {
@@ -75,8 +106,19 @@ public class OutputView {
                 System.out.println("신청한 선택 과목 : " + optionalSubjectNameList.toString());
                 System.out.println();
             }
-            System.out.println("0. 뒤로가기");
         }
+        System.out.println("0. 메인 메뉴로 돌아가기");
+        System.out.println("1. 수강생 조회메뉴로 돌아가기");
+    }
+
+    //2-2. 수강생이름으로 조회 화면 이름 입력받기
+    public static void enterName() { //
+        System.out.println("찾으시는 학생 이름을 ");
+    }
+
+    //2-3. 수강생ID로 조회 화면 입력받기
+    public static void enterID() { //
+        System.out.println("찾으시는 학생 ID를 ");
     }
     //3. 수강생 목록 확인 화면 (오류시)
 
@@ -107,15 +149,7 @@ public class OutputView {
 
     //4-1 학생이 수강한 과목 리스트 출력문
     //4-1 (과목별) 시험 회차 및 점수 등록 입력 받는 출력문
-    //과목 고유번호 따로, 회차, 점수 별로나눠서 인풋 받기
-    public static void showAddSubjectRoundScoreFrontScreen() {
-        System.out.println("|]----수강생 과목별 시험 회차 및 점수 등록----[|");
-    }
 
-    public static void showAddSubjectNameScreen() {
-        System.out.println("과목 이름을 입력해주세요.");
-        System.out.print("->");
-    }
 
     public static void printAllSubjectOfStudent(List<Subject> subjectList) {
         for (Subject subject : subjectList) {
@@ -125,46 +159,19 @@ public class OutputView {
         System.out.print("->");
     }
 
-    public static void showAddRoundScreen() {
-        System.out.println("회차를 입력해주세요.");
-        System.out.println("회차는 1회차부터 10회차 까지 있습니다");
-        System.out.print("->");
-    }
 
-    public static void showAddScoreScreen() {
-        System.out.println("점수를 입력해주세요.");
-        System.out.println("점수는 1점부터 100점까지가 기준입니다.");
-        System.out.println("->");
-    }
 
-    public static void showWrongAddContext() {
+
+    public static void showWrongAddContext(){
         System.out.println("잘못된 입력입니다. 다시입력해주세요.");
     }
 
-    public static void showConfirmAddStudentScore() {
-        System.out.println("정상적으로 등록 되었습니다!");
-    }
-
-
-    //4-1 (과목별) 시험 회차 및 점수 등록 입력 받는 출력문
-
-    public void showAddSubjectRoundScoreScreen() {
-        System.out.println("|]----수강생 과목별 시험 회차 및 점수 등록----[|" + "\n");
-        System.out.println("점수 정보를 (,)로 구분해서 입력해 주세요.");
-        System.out.println("점수 정보(과목 고유 번호, 수강생 고유 번호, 회차, 점수)");
-        System.out.println("-> ");
-        //과목 고유번호, 수강생 고유번호, 회차, 점수 인풋 받기
-        //
-    }
     //4-2 (과목별) 시험 회차별 등급 조회 입력 받는 출력문
 
     public static void showQuerySubjectRoundGradeScreenInput() {
         System.out.println("|]----수강생 과목 회차별 등급 조회----[|" + "\n");
-        System.out.println("조회할 과목을 입력해주세요.");
-        System.out.println("-> ");
         //과목 이름 or 과목 고유번호 입력
     }
-
 
     public static void showStudentSubjectList(String studentName, List<Subject> subjectList) {
         //수강 과목 선택 화면
@@ -179,6 +186,7 @@ public class OutputView {
             System.out.printf("%d. %s\n", subject.getSubjectId(), subject.getSubjectName());
         }
         System.out.println("0. 돌아가기");
+        System.out.println("-> ");
         //과목 이름 인풋을 받음
         //수강생이 수강한 과목이름이 아니거나 잘못된 입력 값이라면
         //잘못된 입력입니다 다시입력해주세요. 출력 후 ->(회차 선택 화면)
@@ -192,9 +200,10 @@ public class OutputView {
     }
 
 
+    // 박하은
     public static void showUpdateStudentRoundGrade(String subjectName, List<Score> scoreList) {
         // 수정 회차 선택화면
-        System.out.println("수정을 원하는 회차를 입력 해주세요.");
+        System.out.println("수정할 회차 번호를 입력하세요 (0: 이전 메뉴로, 1-10: 회차 선택) ");
         System.out.println("과목명 : " + subjectName);
         for (int i = 0; i < scoreList.size(); i++) {
             Score studentScore = scoreList.get(i);
@@ -203,13 +212,17 @@ public class OutputView {
         System.out.println("0. 돌아가기");
     }
 
+    // 박하은.
     public static void promptForScoreUpdate() {
         System.out.println("점수를 수정해주세요.");
+        System.out.println("-> ");
     }
 
+    // 박하은
     public static void showConfirmUpdateStudentScore() {
         System.out.println("수정되었습니다!");
     }
+
     // 수강생 등록 화면 . 1
 
     // 수강생 이름 입력 완료
@@ -273,12 +286,45 @@ public class OutputView {
         System.out.println("3초 뒤 메인 화면으로 돌아갑니다.");
     }
 
+    //4-2 (과목별) 시험 회차별 등급 조회 입력 받는 출력문
+    public static void showQuerySubjectRoundGradeScreenInput(List<Subject> subjectList) {
+        System.out.println("|]----수강생 과목 회차별 등급 조회----[|" + "\n");
+        for (Subject subject : subjectList) {
+            System.out.printf("%d. %s\n",subject.getSubjectId(),subject.getSubjectName());
+        }
+        System.out.println("조회할 과목을 입력해주세요.");
+        System.out.print("-> ");
+        //과목 이름 or 과목 고유번호 입력
+    }
+
     public static void printRoundScore(List<Score> scoreList) {
+        System.out.printf("|]----%s 회차별 등급 조회----[|\n",scoreList.get(0).getSubject().getSubjectName());
         for (Score score : scoreList) {
-            System.out.printf("회차 : &d, 등급 : %s\n", score.getRound(),score.getGrade());
+            System.out.printf("회차 : %3d, 등급 : %s\n", score.getRound(), score.getGrade());
         }
         System.out.println("0. 돌아가기");
+        System.out.print("->");
     }
+
+    public static void printNoScoreRecord() {
+        System.out.println("해당 과목에 등록된 점수가 없습니다.");
+    }
+
+    public static void printNotSubjectOfStudent() {
+        System.out.println("해당 수강생이 신청한 과목의 번호가 아닙니다. 다시 입력해 주세요.");
+    }
+
+    // 잘못된 수강생 ID 입력시 예외처리 Output
+    public static void wrongInputStudentId() {
+        System.out.println("등록된 수강생이 없습니다. 다시 입력해주세요.");
+    }
+
+    //잘못 된 회차 입력시 예외처리 Output
+    public static void wrongInputRound() {
+        System.out.println("잘못된 회차 입력입니다. 회차는 1회차부터 10회차까지 있습니다.");
+        System.out.println("다시 입력해주세요.");
+    }
+
 }
 
 

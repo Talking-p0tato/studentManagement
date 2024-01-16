@@ -48,6 +48,10 @@ public class StudentManagement {
                 case 1:
                     showAllStudent(); //전체학생 조회 화면
                     break;
+                case 2:
+                    showAllStudentByName(); //수강생이름으로 조회
+                case 3:
+                    showAllStudentByID(); //수강생고유번호로 조회
                 case 0:
                     showMainMenu(); //메인 메뉴화면으로 돌아가기
                     break;
@@ -60,11 +64,54 @@ public class StudentManagement {
     //2-1. 전체학생 조회 화면
     public void showAllStudent() {
         OutputView.printAllStudent(repository.findAllStudent());
-        int input = InputView.getUserIntInput();
         while (true) {
+            int input = InputView.getUserIntInput();
             switch (input) {
                 case 0:
                     showMainMenu(); // 메인 메뉴로 돌아가기
+                    break;
+                case 1:
+                    showSearchStudentMenu(); //수강생 조회 메뉴로 돌아가기
+                    break;
+                default:
+                    OutputView.wrongInputScreen(); //잘못된 입력
+            }
+        }
+    }
+
+    //2-2. 수강생이름으로 조회 화면
+    public void showAllStudentByName() {
+        while (true) {
+            OutputView.enterName();
+            String name = InputView.getUserStringInput();
+            OutputView.printAllStudentByName(repository.findAllStudent(), name);
+            int input = InputView.getUserIntInput();
+            switch (input) {
+                case 0:
+                    showMainMenu(); // 메인 메뉴로 돌아가기
+                    break;
+                case 1:
+                    showSearchStudentMenu(); //수강생 조회 메뉴로 돌아가기
+                    break;
+                default:
+                    OutputView.wrongInputScreen(); //잘못된 입력
+            }
+        }
+    }
+
+    //2-3. 수강생ID로 조회 화면
+    public void showAllStudentByID() {
+        while (true) {
+            OutputView.enterID();
+            int ID = InputView.getUserIntInput();
+            OutputView.printAllStudentByID(repository.findAllStudent(), ID);
+            int input = InputView.getUserIntInput();
+            switch (input) {
+                case 0:
+                    showMainMenu(); // 메인 메뉴로 돌아가기
+                    break;
+                case 1:
+                    showSearchStudentMenu(); //수강생 조회 메뉴로 돌아가기
                     break;
                 default:
                     OutputView.wrongInputScreen(); //잘못된 입력
@@ -260,8 +307,8 @@ public class StudentManagement {
             if (repository.hasSubject(studentId, inputSubjectId)) {
                 break;
             } else {
-                //일단 넣어놓음 변경해야함
-                OutputView.incorrectMenu();
+                //일단 넣어놓음 변경해야함 (수정함)
+                OutputView.wrongInputStudentId();
             }
         }
         while (true) {
@@ -270,31 +317,49 @@ public class StudentManagement {
                 if (!repository.isScoreRecordExist(studentId, inputSubjectId, inputRound)) {
                     //유저에게 점수 입력받기
                     int inputScore = InputView.getScoreByUser();
-                    //점수 검증절차 넣어야함.
-                    Student student = repository.findStudentById(studentId);
-                    Subject subject = repository.findSubjectById(inputSubjectId);
-                    repository.addTestScore(student, subject, inputRound, inputScore);
-                    OutputView.completeSetScore();
-                    OutputView.delayChangeScreen();
-                    selectStudentManageInfo(studentId);
-                    break;
+                    //점수 검증절차 넣어야함.(if else로 점수 검증 절차 수정)
+                    if(isValidScore(inputScore)) {
+                        Student student = repository.findStudentById(studentId);
+                        Subject subject = repository.findSubjectById(inputSubjectId);
+                        repository.addTestScore(student, subject, inputRound, inputScore);
+                        OutputView.completeSetScore();
+                        OutputView.delayChangeScreen();
+                        selectStudentManageInfo(studentId);
+                        break;
+                    }else {
+                        OutputView.showWrongAddContext();
+                    }
+
                 } else {
                     OutputView.duplicateRound();
                 }
             } else {
                 //수정해야함.
-                OutputView.incorrectMenu();
+                OutputView.wrongInputRound();
             }
         }
     }
 
     //3-2. (과목별) 회차별 등급 조회
     public void showSubjectRoundGrade(int studentId) {
-        OutputView.showQuerySubjectRoundGradeScreenInput();
-        int input = InputView.getUserIntInputNoMessage();
+        OutputView.showQuerySubjectRoundGradeScreenInput(repository.findStudentById(studentId).getSubjectList());
+        int input = 0;
+        while(true) {
+            input = InputView.getUserIntInputNoMessage();
+            if(repository.hasSubject(studentId,input)) {
+                break;
+            }
+            OutputView.printNotSubjectOfStudent();
+        }
         String subjectName = repository.findSubjectNameById(input);
         List<Score> scoreList = repository.findGradeByIdAndName(studentId, subjectName);
-        OutputView.printRoundScore(scoreList);
+        if(scoreList.isEmpty()) {
+            OutputView.printNoScoreRecord();
+            OutputView.delayChangeScreen();
+            selectStudentManageInfo(studentId);
+        } else {
+            OutputView.printRoundScore(scoreList);
+        }
         while (true) {
             int backinput = InputView.getUserIntInputNoMessage();
             if (backinput == 0) {
@@ -315,7 +380,7 @@ public class StudentManagement {
         while (true) {
             int subjectId = InputView.getUserIntInput();
             //0 입력 시 3.메뉴화면으로 이동
-            if (subjectId == 0) {
+            if (subjectId ==  0) {
                 selectStudentManageInfo(student.getStudentId());
                 break;
             }
@@ -340,54 +405,52 @@ public class StudentManagement {
         // 회차 및 점수 출력
         OutputView.showUpdateStudentRoundGrade(repository.findSubjectNameById(subjectId), scores);
 
-        // 회차 선택
+        // 회차 선택.
         int roundNumber;
-        do {
-            System.out.println("수정할 회차 번호를 입력하세요 (1-10): ");
+        while (true) {
             roundNumber = InputView.getUserIntInput();
-            if (!isValidRound(roundNumber)) {
-                OutputView.showError("회차 번호는 1에서 10 사이여야 합니다.");
-                roundNumber = -1;
+
+            if (roundNumber == 0) {
+                selectStudentManageInfo(studentId); // 이전 메뉴로 돌아가기
+                return; // 함수 종료
             }
-        } while (roundNumber == -1);
 
-        // 점수 수정 안내 메시지 출력
-        OutputView.promptForScoreUpdate();
+            if (isValidRound(roundNumber)) {
+                int finalRoundNumber = roundNumber;
+                Score scoreToUpdate = scores.stream()
+                        .filter(score -> score.getRound() == finalRoundNumber)
+                        .findFirst()
+                        .orElse(null);
 
-        // 회차에 해당하는 점수 객체 찾기
-        int finalRoundNumber = roundNumber;
-        Score scoreToUpdate = scores.stream()
-                .filter(score -> score.getRound() == finalRoundNumber)
-                .findFirst()
-                .orElse(null);
+                if (scoreToUpdate == null) {
+                    OutputView.showError("선택한 회차가 목록에 없습니다. 다시 입력하거나 0을 입력하여 이전 메뉴로 돌아갑니다.");
+                    continue; // 새로운 회차 번호로 다시 시도
+                }
 
-        if (scoreToUpdate == null) {
-            OutputView.showError("선택한 회차가 목록에 없습니다.");
-            return;
+                // 새로운 점수 입력
+                OutputView.promptForScoreUpdate();
+                int newScore;
+                do {
+                    newScore = InputView.getUserIntInput();
+                    if (!isValidScore(newScore)) {
+                        OutputView.showError("점수는 0에서 100 사이여야 합니다.");
+                        newScore = -1;
+                    }
+                } while (newScore == -1);
+
+                // 점수 업데이트
+                scoreToUpdate.setScore(newScore);
+                scoreToUpdate.setGrade();
+                repository.updateTestScore(studentId, subjectId, roundNumber, newScore);
+                OutputView.showConfirmUpdateStudentScore();
+                break; // 회차 선택 및 점수 업데이트 완료
+            } else {
+                OutputView.showError("회차 번호는 1에서 10 사이여야 합니다.");
+            }
         }
 
-        // 새로운 점수 입력
-        int newScore;
-        do {
-            newScore = InputView.getUserIntInput();
-            if (!isValidScore(newScore)) {
-                OutputView.showError("점수는 0에서 100 사이여야 합니다.");
-                newScore = -1;
-            }
-        } while (newScore == -1);
-
-        // 점수 업데이트
-        scoreToUpdate.setScore(newScore);
-        scoreToUpdate.setGrade();
-
-        // 변경 사항을 저장소에 반영
-        repository.updateTestScore(studentId, subjectId, roundNumber, newScore);
-
-        // 업데이트 확인 메시지 출력
-        OutputView.showConfirmUpdateStudentScore();
-
-        // 점수 수정 후 점수 관리로 돌아감.
-        OutputView.showStudentScoreManageInfo();
+        // 점수 수정 후 점수 관리로 돌아감
+        selectStudentManageInfo(studentId);
     }
 
     private boolean isValidRound(int round) {

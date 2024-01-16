@@ -123,7 +123,7 @@ public class MemoryRepository {
     
     // 학생 등급 조회
     public List<Score> findGradeByIdAndName(int studentId, String subjectName) {
-        List<Score> gradeList = this.scoreList;
+        List<Score> gradeList = new ArrayList<>();
         for (Score score : scoreList) {
             if (score.getStudent().getStudentId() == studentId && score.getSubject().getSubjectName().equals(subjectName)) {
                 gradeList.add(score);
@@ -131,16 +131,8 @@ public class MemoryRepository {
         }
         return gradeList;
     }
+
     //
-
-    //점수가 범위 안인지 유효성 검사
-    public boolean validateAndParseScore(int inputScore) {
-        if (isValidScore(inputScore)) {
-            return true;
-        } else return false;
-
-
-    }
 
     private boolean isValidScore(int score) {
         return score >= 1 && score <= 100;
