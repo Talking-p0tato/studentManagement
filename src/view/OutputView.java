@@ -106,6 +106,11 @@ public class OutputView {
 
     //4-1 학생이 수강한 과목 리스트 출력문
     //4-1 (과목별) 시험 회차 및 점수 등록 입력 받는 출력문
+    //과목 고유번호 따로, 회차, 점수 별로나눠서 인풋 받기
+    public static void showAddSubjectRoundScoreFrontScreen(){
+        System.out.println("|]----수강생 과목별 시험 회차 및 점수 등록----[|");
+    }
+
 
     public static void printAllSubjectOfStudent(List<Subject> subjectList) {
         for (Subject subject : subjectList) {
@@ -115,10 +120,27 @@ public class OutputView {
         System.out.print("->");
     }
 
+    public static void showAddRoundScreen(){
+        System.out.println("회차를 입력해주세요.");
+        System.out.println("회차는 1회차부터 10회차 까지 있습니다");
+        System.out.print("->");
+    }
+
+    public static void showAddScoreScreen(){
+        System.out.println("점수를 입력해주세요.");
+        System.out.println("점수는 1점부터 100점까지가 기준입니다.");
+        System.out.println("->");
+    }
     public static void showWrongAddContext(){
         System.out.println("잘못된 입력입니다. 다시입력해주세요.");
     }
 
+    public static void showConfirmAddStudentScore(){
+        System.out.println("정상적으로 등록 되었습니다!");
+    }
+
+
+    //4-1 (과목별) 시험 회차 및 점수 등록 입력 받는 출력문
 
     public static void showStudentSubjectList(String studentName, List<Subject> subjectList) {
         //수강 과목 선택 화면
@@ -226,6 +248,5 @@ public class OutputView {
         System.out.println("다시 입력해주세요.");
     }
 
-}
 
 
